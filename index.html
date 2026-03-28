@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>The July Legacy | 1 Billion Fruit Trees Mission</title>
+    <title>The July Legacy | Ark Archive Official</title>
     
     <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&family=Montserrat:wght@300;400;600&display=swap" rel="stylesheet">
     
@@ -16,10 +16,9 @@
             --black: #050505;
             --white: #F5F5F5;
             --dark-gray: #121212;
-            --soft-gray: #888;
         }
 
-        * { box-sizing: border-box; }
+        * { box-sizing: border-box; transition: all 0.3s ease; }
 
         body {
             margin: 0;
@@ -29,73 +28,99 @@
             overflow-x: hidden;
         }
 
-        /* Hero Section */
+        /* Hero Section Styling */
         .hero {
-            height: 90vh;
+            height: 80vh;
             display: flex;
             flex-direction: column;
             justify-content: center;
             align-items: center;
             text-align: center;
-            background: linear-gradient(rgba(0,0,0,0.85), rgba(0,0,0,0.85)), 
+            background: linear-gradient(rgba(0,0,0,0.8), rgba(0,0,0,0.8)), 
                         url('https://images.unsplash.com/photo-1464306208223-e0b4495a5553?q=80&w=2070');
             background-size: cover;
-            background-position: center;
-            border-bottom: 1px solid var(--gold);
+            border-bottom: 2px solid var(--gold);
             padding: 20px;
         }
 
-        h1 {
+        .hero h1 {
             font-family: 'Cinzel', serif;
             font-size: clamp(2rem, 8vw, 4rem);
             color: var(--gold);
             margin: 0;
-            letter-spacing: 10px;
-            text-transform: uppercase;
+            letter-spacing: 8px;
         }
 
-        .tagline {
-            font-size: 1.1rem;
-            color: var(--soft-gray);
-            margin-top: 15px;
-            letter-spacing: 3px;
-            text-transform: uppercase;
-        }
-
-        .mission-text {
-            max-width: 700px;
-            margin-top: 30px;
+        .archive-tag {
+            font-size: 1rem;
+            letter-spacing: 4px;
+            color: var(--white);
+            margin-top: 10px;
             font-weight: 300;
-            line-height: 1.8;
-            color: #ccc;
         }
 
-        /* Donation Form Section */
-        .container {
+        .hero p {
             max-width: 800px;
-            margin: -80px auto 100px;
-            padding: 0 20px;
+            margin-top: 30px;
+            line-height: 1.8;
+            color: #bbb;
+            font-style: italic;
+        }
+
+        /* Information Portals (The Grid Design) */
+        .portal-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+            padding: 40px;
+            max-width: 1200px;
+            margin: -50px auto 50px;
+        }
+
+        .portal-item {
+            background: var(--dark-gray);
+            border: 1px solid #222;
+            padding: 30px;
+            border-radius: 4px;
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .portal-item:hover {
+            border-color: var(--gold);
+            transform: translateY(-5px);
+            background: #1a1a1a;
+        }
+
+        .portal-item h3 {
+            color: var(--gold);
+            font-family: 'Cinzel', serif;
+            margin-top: 0;
+            font-size: 1.1rem;
+        }
+
+        .portal-item p {
+            font-size: 0.9rem;
+            color: #999;
+            line-height: 1.6;
+        }
+
+        /* Donation & Gateway Section */
+        .main-container {
+            max-width: 900px;
+            margin: 0 auto 100px;
+            padding: 20px;
         }
 
         .donation-card {
-            background: var(--dark-gray);
-            padding: 60px 40px;
-            border-radius: 2px;
-            border: 1px solid #222;
-            box-shadow: 0 40px 100px rgba(0,0,0,0.8);
+            background: #0a0a0a;
+            padding: 50px;
+            border: 1px solid var(--gold);
+            box-shadow: 0 0 50px rgba(197, 160, 89, 0.1);
         }
 
-        .section-title {
-            display: block;
-            color: var(--gold);
-            font-size: 0.8rem;
-            letter-spacing: 2px;
-            text-transform: uppercase;
-            margin-bottom: 25px;
-            font-weight: 600;
-        }
-
-        .input-group { margin-bottom: 40px; }
+        .input-group { margin-bottom: 30px; }
 
         input {
             width: 100%;
@@ -104,164 +129,152 @@
             border-bottom: 1px solid #333;
             color: var(--white);
             padding: 15px 0;
-            font-size: 1.2rem;
+            font-size: 1.1rem;
             outline: none;
-            transition: border-color 0.4s;
         }
 
         input:focus { border-bottom: 1px solid var(--gold); }
 
-        /* Gateway Tabs */
-        .payment-tabs {
+        .gateway-tabs {
             display: flex;
-            gap: 30px;
-            margin-bottom: 30px;
+            gap: 20px;
+            margin: 30px 0;
             border-bottom: 1px solid #222;
         }
 
         .tab-btn {
             background: none;
             border: none;
-            color: #444;
-            padding: 15px 0;
+            color: #555;
+            padding: 15px;
             cursor: pointer;
-            font-size: 0.9rem;
             font-weight: 600;
             text-transform: uppercase;
-            transition: 0.3s;
         }
 
-        .tab-btn.active {
-            color: var(--gold);
-            border-bottom: 2px solid var(--gold);
-        }
+        .tab-btn.active { color: var(--gold); border-bottom: 2px solid var(--gold); }
 
-        .portal-content {
+        .portal-display {
             display: none;
-            padding: 25px;
-            background: #0a0a0a;
-            border: 1px solid #1a1a1a;
-            margin-bottom: 40px;
-            font-size: 0.95rem;
-        }
-
-        .portal-content.active { display: block; }
-
-        .address-box {
-            color: var(--gold);
-            word-break: break-all;
-            font-family: monospace;
-            margin-top: 10px;
+            padding: 20px;
             background: #111;
-            padding: 12px;
-            border: 1px solid #222;
+            margin-bottom: 30px;
+            border-left: 3px solid var(--gold);
         }
 
-        .btn-confirm {
+        .portal-display.active { display: block; }
+
+        .confirm-btn {
             width: 100%;
             background: var(--gold);
-            color: #000;
+            color: black;
             border: none;
             padding: 20px;
-            font-size: 1rem;
             font-weight: 700;
             text-transform: uppercase;
-            letter-spacing: 3px;
+            letter-spacing: 2px;
             cursor: pointer;
-            transition: 0.3s;
         }
 
-        .btn-confirm:hover { background: #e2b764; transform: translateY(-2px); }
+        .confirm-btn:hover { background: #e2b764; }
 
-        /* Floating WhatsApp Support */
+        /* Floating WhatsApp */
         .whatsapp-float {
             position: fixed;
             bottom: 30px;
             right: 30px;
             background: #25D366;
             color: white;
-            width: 60px;
-            height: 60px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            box-shadow: 0 10px 25px rgba(0,0,0,0.3);
+            padding: 15px 25px;
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: bold;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
             z-index: 1000;
         }
 
-        @media (max-width: 600px) {
-            h1 { font-size: 2.2rem; }
-            .donation-card { padding: 40px 20px; }
+        @media (max-width: 768px) {
+            .portal-grid { padding: 20px; }
+            .donation-card { padding: 30px 20px; }
         }
     </style>
 </head>
 <body>
 
-    <a href="https://wa.me/8801576940717" class="whatsapp-float" target="_blank">
-        <svg fill="#FFFFFF" width="30px" height="30px" viewBox="0 0 24 24"><path d="M12.031 6.172c-3.181 0-5.767 2.586-5.768 5.766-.001 1.298.38 2.27 1.019 3.287l-.582 2.128 2.182-.573c.978.58 1.911.928 3.145.929 3.178 0 5.767-2.587 5.768-5.766 0-3.187-2.59-5.771-5.764-5.771zm3.392 8.244c-.144.405-.837.774-1.17.824-.299.045-.677.063-1.092-.069-.252-.08-.575-.187-.988-.365-1.739-.751-2.874-2.502-2.961-2.617-.087-.116-.708-.94-.708-1.793s.448-1.273.607-1.446c.159-.173.346-.217.462-.217s.231.006.332.009c.109.004.253-.041.397.303.144.344.491 1.199.534 1.286.044.087.073.188.014.303-.058.116-.087.188-.173.289l-.26.303c-.087.101-.177.211-.077.385.101.173.448.741.96 1.201.66.592 1.216.774 1.389.86.173.087.275.072.376-.044l.433-.506c.101-.116.202-.087.332-.043s.838.397.982.469c.145.072.242.108.278.173.036.065.036.376-.108.781z"/></svg>
-    </a>
+    <a href="https://wa.me/8801576940717" class="whatsapp-float">WhatsApp Support</a>
 
-    <section class="hero">
+    <header class="hero">
+        <div class="archive-tag">ARK ARCHIVE OFFICIAL</div>
         <h1>THE JULY LEGACY</h1>
-        <div class="tagline">Providing Nutrition, Planting Balance</div>
-        <div class="mission-text">
-            Our mission is to provide one fruit tree per student (Grade 1-10) in all schools of Bangladesh. $1 = 1 Fruit Tree. Logistics and personal expenses are covered 100% from our own pockets.
+        <p>"History is not just lived; it is preserved for eternity. This archive is a silent witness to the courage of July. By claiming a plot, you are securing a fragment of the revolution forever."</p>
+    </header>
+
+    <div class="portal-grid">
+        <div class="portal-item">
+            <h3>Why claim a plot?</h3>
+            <p>Every plot represents a fruit tree for a student. You are not just donating; you are building a green legacy for the next generation.</p>
         </div>
-    </section>
+        <div class="portal-item">
+            <h3>Is it a one-time payment?</h3>
+            <p>Yes. A single $1 donation secures one tree and its lifelong preservation in our digital archive under your name.</p>
+        </div>
+        <div class="portal-item">
+            <h3>Is this data secure?</h3>
+            <p>Our archive uses encrypted Firebase technology to ensure your donor profile and contribution history remain eternal.</p>
+        </div>
+        <div class="portal-item">
+            <h3>Environmental Impact</h3>
+            <p>1 Billion trees will balance the ecosystem, reduce carbon emissions, and provide free nutrition to children across Bangladesh.</p>
+        </div>
+        <div class="portal-item">
+            <h3>Social Connectivity</h3>
+            <p>Verified donors can add their social links and photos, connecting with other revolution-minders globally.</p>
+        </div>
+        <div class="portal-item">
+            <h3>Who owns this archive?</h3>
+            <p>The community. We are the silent witnesses, ensuring that the spirit of July and nature's balance are never forgotten.</p>
+        </div>
+    </div>
 
-    <div class="container">
+    <div class="main-container">
         <div class="donation-card">
+            <h2 style="font-family: 'Cinzel', serif; color: var(--gold); text-align: center; margin-bottom: 40px;">SECURE YOUR FRAGMENT</h2>
             
-            <span class="section-title">01. Donor Profile</span>
             <div class="input-group">
-                <input type="text" id="donorName" placeholder="Donor Name (Full Name)" required>
+                <input type="text" id="donorName" placeholder="Full Name" required>
             </div>
-            
-            <span class="section-title">02. Gift Amount ($1 = 1 Tree)</span>
+
             <div class="input-group">
-                <input type="number" id="treeCount" placeholder="Number of Trees (Max 50 per gift)" max="50" min="1" required>
-                <p style="font-size: 0.8rem; color: #555; margin-top: 10px;">Gift Total: <span id="usdDisplay" style="color: var(--gold); font-weight: bold;">$0</span></p>
+                <input type="number" id="treeCount" placeholder="Number of Trees (Max 50)" max="50" min="1" required>
+                <div style="margin-top: 10px; font-size: 0.9rem;">Total Impact: <span id="usdVal" style="color: var(--gold);">$0</span></div>
             </div>
 
-            <span class="section-title">03. Select Payment Gateway</span>
-            <div class="payment-tabs">
-                <button class="tab-btn active" onclick="showPortal('binance', this)">Binance</button>
-                <button class="tab-btn" onclick="showPortal('bkash', this)">bKash</button>
-                <button class="tab-btn" onclick="showPortal('bank', this)">Bank</button>
+            <div class="gateway-tabs">
+                <button class="tab-btn active" onclick="switchTab('binance', this)">Binance</button>
+                <button class="tab-btn" onclick="switchTab('bkash', this)">bKash</button>
+                <button class="tab-btn" onclick="switchTab('bank', this)">Bank</button>
             </div>
 
-            <div id="binance" class="portal-content active">
-                <strong>Pay via UID:</strong>
-                <div class="address-box">912221034</div>
-                <br>
-                <strong>USDT (TRC20) Address:</strong>
-                <div class="address-box">TTapBkTqrDnzHbWzek6wSBUTcJKFmR8Ws6</div>
+            <div id="binance" class="portal-display active">
+                <strong>UID:</strong> 912221034 <br>
+                <strong>TRC20:</strong> <small>TTapBkTqrDnzHbWzek6wSBUTcJKFmR8Ws6</small>
             </div>
 
-            <div id="bkash" class="portal-content">
-                <p>Global remittance via Remitly / Taptap Send / Sendwave:</p>
-                <div class="address-box">Personal: +880 1756 206213</div>
-                <div class="address-box">Personal: +880 1576 940717</div>
+            <div id="bkash" class="portal-display">
+                <strong>Numbers (Remitly/Taptap):</strong><br>
+                01756206213, 01576940717
             </div>
 
-            <div id="bank" class="portal-content">
-                <p>Institutional Banking Details:</p>
-                <div style="font-size: 0.85rem; color: #aaa;">
-                    Recipient: [Awaiting Verification]<br>
-                    Bank: [Awaiting Verification]<br>
-                    A/C: [Awaiting Verification]<br>
-                    SWIFT: [Awaiting Verification]
-                </div>
+            <div id="bank" class="portal-display">
+                <strong>International Wire:</strong><br>
+                Recipient: [Pending] | SWIFT: [Pending]
             </div>
 
-            <span class="section-title">04. Receipt Verification</span>
             <div class="input-group">
-                <input type="text" id="txnId" placeholder="Transaction ID / Receipt No" required>
+                <input type="text" id="txnId" placeholder="Transaction ID / Receipt Reference" required>
             </div>
 
-            <button class="btn-confirm" onclick="submitToFirebase()">Submit Gift & Plant Tree</button>
-
+            <button class="confirm-btn" onclick="submitDonation()">Finalize & Verify</button>
         </div>
     </div>
 
@@ -280,52 +293,35 @@
         firebase.initializeApp(firebaseConfig);
         const db = firebase.database();
 
-        // Portal Switching Logic
-        function showPortal(id, btn) {
-            document.querySelectorAll('.portal-content').forEach(p => p.classList.remove('active'));
+        function switchTab(id, btn) {
+            document.querySelectorAll('.portal-display').forEach(p => p.classList.remove('active'));
             document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
             document.getElementById(id).classList.add('active');
             btn.classList.add('active');
         }
 
-        // Real-time USD Calculation
-        const treeInput = document.getElementById('treeCount');
-        const usdDisplay = document.getElementById('usdDisplay');
-
-        treeInput.addEventListener('input', (e) => {
-            let val = e.target.value;
-            if(val > 50) {
-                alert("For security and wallet limits, we accept a maximum of 50 trees per transaction. For larger contributions, please use multiple transactions.");
-                e.target.value = 50;
-                val = 50;
-            }
-            usdDisplay.innerText = "$" + (val || 0);
+        document.getElementById('treeCount').addEventListener('input', (e) => {
+            document.getElementById('usdVal').innerText = "$" + (e.target.value || 0);
         });
 
-        // Data Submission Logic
-        function submitToFirebase() {
+        function submitDonation() {
             const name = document.getElementById('donorName').value;
-            const count = document.getElementById('treeCount').value;
+            const trees = document.getElementById('treeCount').value;
             const txn = document.getElementById('txnId').value;
 
-            if (!name || !count || !txn) {
-                alert("Please complete all sections to ensure your donation is verified.");
+            if(!name || !trees || !txn) {
+                alert("Please fill in all details to preserve your fragment.");
                 return;
             }
 
-            // Reference to 'donations' node using TxnID as unique key
             db.ref('donations/' + txn).set({
                 donorName: name,
-                treeCount: count,
-                transactionId: txn,
-                status: "pending", // Default status for manual verification
+                treeCount: trees,
+                status: "pending",
                 timestamp: Date.now()
             }).then(() => {
-                alert("Thank you! Your donation is now being verified. Your name will appear on the wall soon.");
-                window.location.reload();
-            }).catch(err => {
-                alert("Database connection error. Please try again or contact support.");
-                console.error(err);
+                alert("Thank you. Your contribution to The July Legacy has been recorded for verification.");
+                location.reload();
             });
         }
     </script>
