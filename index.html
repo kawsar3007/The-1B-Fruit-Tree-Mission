@@ -3,196 +3,173 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ARK | GLOBAL ETERNAL LEGACY</title>
+    <title>ARK | ONE CHILD ONE TREE</title>
     
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-database-compat.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
 
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&family=Inter:wght@100;300;400;600&display=swap');
 
         :root {
-            --ark-primary: #1E5128; /* Your requested light green */
-            --ark-deep: #0A2F1F;
+            --ark-primary: #1E5128;
             --ark-black: #050505;
-            --ark-glass: rgba(255, 255, 255, 0.03);
             --ark-border: rgba(255, 255, 255, 0.1);
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; }
-        body { 
-            background: var(--ark-black); color: #fff; 
-            font-family: 'Inter', sans-serif; overflow-x: hidden;
-            scroll-behavior: smooth;
-        }
+        body { background: var(--ark-black); color: #fff; font-family: 'Inter', sans-serif; overflow-x: hidden; }
 
-        /* Hero Background with Parallax/Video Feel */
-        .hero-bg {
+        /* Background Video/Image Overlay */
+        .bg-overlay {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: linear-gradient(rgba(0,0,0,0.7), rgba(0,0,0,0.9)), 
-                        url('https://images.unsplash.com/photo-1511497584788-876760111969?auto=format&fit=crop&q=80&w=2000');
-            background-size: cover; background-position: center; z-index: -1;
-            filter: grayscale(0.5) contrast(1.2);
+            background: linear-gradient(rgba(0,0,0,0.8), rgba(0,0,0,0.95)), url('https://images.unsplash.com/photo-1441974231531-c6227db76b6e?q=80&w=2000');
+            background-size: cover; z-index: -1;
         }
 
-        /* Language Switcher Overrides */
-        #google_translate_element { margin-right: 20px; }
-        .goog-te-banner-frame.skiptranslate { display: none !important; }
-        body { top: 0px !important; }
+        /* Language Switcher */
+        .lang-container { position: absolute; top: 20px; left: 50px; z-index: 3000; }
+        #google_translate_element { border: 1px solid var(--ark-border); padding: 5px; background: rgba(0,0,0,0.5); }
 
-        /* Navigation */
-        .header {
-            position: fixed; top: 0; width: 100%; padding: 25px 5%;
-            display: flex; justify-content: space-between; align-items: center;
-            background: rgba(0,0,0,0.8); backdrop-filter: blur(20px); z-index: 2000;
-            border-bottom: 1px solid var(--ark-border);
+        header { padding: 40px 5%; text-align: center; border-bottom: 1px solid var(--ark-border); }
+        .logo { font-family: 'Cinzel', serif; font-size: 28px; letter-spacing: 12px; font-weight: bold; }
+        .social-links { margin-top: 15px; display: flex; justify-content: center; gap: 20px; }
+        .social-links a { color: #fff; font-size: 18px; transition: 0.3s; }
+        .social-links a:hover { color: var(--ark-primary); }
+
+        /* Counter */
+        .global-record { text-align: center; padding: 60px 0; }
+        .record-title { font-size: 14px; letter-spacing: 8px; color: var(--ark-primary); text-transform: uppercase; display: block; margin-bottom: 10px; }
+        .record-val { font-family: 'Cinzel', serif; font-size: 60px; font-weight: bold; }
+
+        /* Main Portals (The 3 Cards) */
+        .portal-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 30px; padding: 50px 10%; }
+        .info-portal { 
+            border: 1px solid var(--ark-border); padding: 40px; text-align: center; cursor: pointer;
+            transition: 0.5s; background: rgba(255,255,255,0.02);
         }
-        .logo { font-family: 'Cinzel', serif; letter-spacing: 8px; font-size: 20px; font-weight: 700; color: var(--ark-primary); }
-
-        /* Counter Section */
-        .stat-banner {
-            padding-top: 150px; text-align: center;
+        .info-portal:hover { border-color: var(--ark-primary); background: rgba(30, 81, 40, 0.1); }
+        .info-portal h3 { font-family: 'Cinzel', serif; font-size: 16px; margin-bottom: 15px; color: var(--ark-primary); }
+        
+        /* Modal for Portals */
+        .modal { 
+            display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; 
+            background: rgba(0,0,0,0.98); z-index: 5000; justify-content: center; align-items: center; padding: 20px;
         }
-        .counter-box { font-family: 'Cinzel', serif; font-size: clamp(40px, 8vw, 80px); font-weight: bold; letter-spacing: 5px; }
-        .stat-label { font-size: 10px; letter-spacing: 8px; color: var(--ark-primary); text-transform: uppercase; margin-bottom: 10px; }
+        .modal-content { max-width: 700px; text-align: center; border: 1px solid var(--ark-primary); padding: 60px; background: #000; }
+        .modal-content p { line-height: 2; color: #ccc; font-size: 15px; }
 
-        /* Sections */
-        .section { padding: 100px 10%; min-height: 80vh; display: flex; flex-direction: column; justify-content: center; }
-        .section-tag { font-size: 10px; color: var(--ark-primary); letter-spacing: 5px; margin-bottom: 30px; text-transform: uppercase; }
-        .manifesto { font-size: clamp(16px, 2vw, 20px); line-height: 1.8; color: #ccc; max-width: 900px; font-weight: 300; text-align: justify; border-left: 2px solid var(--ark-primary); padding-left: 30px; }
-
-        /* Grid Info */
-        .info-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 40px; margin-top: 60px; }
-        .info-card { background: var(--ark-glass); border: 1px solid var(--ark-border); padding: 40px; transition: 0.4s; }
-        .info-card:hover { border-color: var(--ark-primary); background: rgba(30, 81, 40, 0.05); }
-        .info-card h3 { font-family: 'Cinzel'; font-size: 16px; margin-bottom: 20px; color: var(--ark-primary); }
-        .info-card p { font-size: 14px; color: #999; line-height: 1.7; }
-
-        /* Certificate Download Section */
-        .download-zone { text-align: center; background: rgba(0,0,0,0.5); padding: 80px 10%; border-top: 1px solid #111; }
-        .search-bar { display: flex; max-width: 600px; margin: 40px auto; border: 1px solid var(--ark-primary); padding: 5px; border-radius: 5px; }
-        .search-bar input { flex: 1; background: transparent; border: none; padding: 15px; color: #fff; outline: none; }
-        .search-btn { background: var(--ark-primary); color: #fff; border: none; padding: 0 30px; cursor: pointer; text-transform: uppercase; font-size: 11px; letter-spacing: 2px; }
-
-        /* Infinite Archive Plot Grid */
-        .archive-section { padding: 100px 5%; background: #020202; }
-        #plot-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); gap: 20px; }
-        .plot-card { border: 1px solid #111; padding: 30px; text-align: center; background: #000; transition: 0.5s; }
-        .plot-card:hover { border-color: var(--ark-primary); transform: scale(1.02); }
-        .plot-img { width: 80px; height: 80px; border-radius: 50%; border: 1px solid #222; margin-bottom: 15px; }
-
-        /* Side Portal Drawer */
-        #portal-drawer {
-            position: fixed; top: 0; right: -100%; width: min(500px, 100%); height: 100vh;
-            background: #000; border-left: 1px solid var(--ark-primary); z-index: 3000;
-            padding: 80px 50px; transition: 0.6s cubic-bezier(0.19, 1, 0.22, 1); overflow-y: auto;
+        /* Plot Archive Grid - 7 Items per Row */
+        .archive-header { text-align: center; padding: 100px 0 40px; font-family: 'Cinzel'; letter-spacing: 10px; color: var(--ark-primary); }
+        .plot-grid { 
+            display: grid; 
+            grid-template-columns: repeat(7, 1fr); 
+            gap: 20px; padding: 0 5%; margin-bottom: 100px;
         }
-        #portal-drawer.open { right: 0; }
-        .ark-input { width: 100%; padding: 15px 0; background: transparent; border: none; border-bottom: 1px solid #333; color: #fff; margin-bottom: 30px; outline: none; }
-        .ark-input:focus { border-color: var(--ark-primary); }
+        .plot-unit { text-align: center; }
+        .plot-circle { 
+            width: 100px; height: 100px; border-radius: 50%; border: 2px solid var(--ark-primary); 
+            margin: 0 auto 15px; overflow: hidden; transition: 0.4s; cursor: pointer;
+        }
+        .plot-circle:hover { transform: scale(1.1); box-shadow: 0 0 20px var(--ark-primary); }
+        .plot-circle img { width: 100%; height: 100%; object-fit: cover; }
+        .plot-name { font-size: 11px; text-transform: uppercase; letter-spacing: 1px; color: #fff; }
+        .plot-trees { font-size: 9px; color: var(--ark-primary); margin-top: 5px; }
+        .plot-kids { font-size: 8px; color: #555; margin-top: 3px; font-style: italic; }
 
-        /* Certificate Design for Export */
-        #cert-gen { position: absolute; left: -9999px; width: 800px; height: 500px; background: #fff; color: #000; padding: 60px; border: 20px solid var(--ark-deep); font-family: 'Cinzel', serif; text-align: center; }
+        /* Drawers */
+        .drawer { 
+            position: fixed; top: 0; right: -100%; width: 450px; height: 100vh; 
+            background: #000; z-index: 4000; padding: 80px 50px; transition: 0.6s cubic-bezier(0.19, 1, 0.22, 1);
+            border-left: 1px solid var(--ark-primary);
+        }
+        .drawer.open { right: 0; }
+        .pay-item { margin-bottom: 30px; border-bottom: 1px solid #111; padding-bottom: 15px; }
+        .pay-item h4 { font-size: 10px; color: var(--ark-primary); text-transform: uppercase; margin-bottom: 8px; }
+        .pay-item p { font-family: monospace; font-size: 13px; }
 
-        /* Fixed Footer Triggers */
-        .footer-triggers { position: fixed; bottom: 30px; left: 50%; transform: translateX(-50%); display: flex; gap: 20px; z-index: 1000; }
-        .trigger-btn { padding: 15px 30px; background: var(--ark-primary); color: #fff; border-radius: 50px; text-decoration: none; font-size: 10px; font-weight: bold; letter-spacing: 2px; text-transform: uppercase; cursor: pointer; box-shadow: 0 10px 30px rgba(0,0,0,0.5); }
+        /* Legacy Portal UI */
+        .legacy-btn { 
+            background: var(--ark-primary); color: #fff; border: none; padding: 20px 40px; 
+            font-size: 12px; letter-spacing: 5px; font-weight: bold; cursor: pointer; text-transform: uppercase;
+        }
+        .ark-input { width: 100%; padding: 15px; background: transparent; border: none; border-bottom: 1px solid #333; color: #fff; margin-bottom: 30px; outline: none; text-align: center; font-size: 13px; }
+
+        /* Responsive */
+        @media (max-width: 1024px) { .plot-grid { grid-template-columns: repeat(4, 1fr); } }
+        @media (max-width: 600px) { .plot-grid { grid-template-columns: repeat(2, 1fr); } .drawer { width: 100%; } }
     </style>
 </head>
 <body>
 
-    <div class="hero-bg"></div>
+    <div class="bg-overlay"></div>
 
-    <header class="header">
+    <div class="lang-container">
+        <div id="google_translate_element"></div>
+    </div>
+
+    <header>
         <div class="logo">ARK ARCHIVE</div>
-        <div style="display: flex; align-items: center;">
-            <div id="google_translate_element"></div>
-            <a href="javascript:void(0)" onclick="toggleDrawer()" style="color: #fff; text-decoration: none; font-size: 10px; letter-spacing: 2px; border: 1px solid #333; padding: 10px 20px;">ACQUISITION</a>
+        <div class="social-links">
+            <a href="https://www.facebook.com/arkarchivr6700" target="_blank"><i class="fab fa-facebook-f"></i></a>
+            <a href="https://x.com/kawsar6700" target="_blank"><i class="fab fa-twitter"></i></a>
         </div>
     </header>
 
-    <div class="stat-banner">
-        <span class="stat-label">Global Reforestation Record</span>
-        <div class="counter-box" id="liveCounter">0</div>
+    <section class="global-record">
+        <span class="record-title">Global Reforestation Record</span>
+        <div class="record-val" id="liveCounter">0</div>
+    </section>
+
+    <div class="portal-grid">
+        <div class="info-portal" onclick="openInfo('why')">
+            <h3>Why Fruit Trees?</h3>
+            <p style="font-size: 12px; color: #666;">[ Click to Expand ]</p>
+        </div>
+        <div class="info-portal" onclick="openInfo('cost')">
+            <h3>Zero Cost Operations</h3>
+            <p style="font-size: 12px; color: #666;">[ Click to Expand ]</p>
+        </div>
+        <div class="info-portal" onclick="openInfo('scale')">
+            <h3>Global Scalability</h3>
+            <p style="font-size: 12px; color: #666;">[ Click to Expand ]</p>
+        </div>
     </div>
 
-    <section class="section">
-        <span class="section-tag">Philosophy & Commitment</span>
-        <p class="manifesto">
-            "Our mission is simple yet absolute: to provide every student in Bangladesh, from Class 1 to 10, with their own fruit-bearing tree. In an era of environmental decline, we believe in planting the seeds of both nutrition and nature. 100% of your contribution is used strictly for purchasing trees. We bear all logistical, travel, and operational costs personally. Your donation plants hope."
-        </p>
+    <div style="text-align: center; padding: 50px 0;">
+        <button class="legacy-btn" onclick="openLegacy()">Etch Your Legacy</button>
+    </div>
+
+    <h2 class="archive-header">THE ARK ARCHIVE</h2>
+    <div class="plot-grid" id="mainGrid">
+        </div>
+    <div id="load-more" style="text-align: center; color: #222; font-size: 10px; padding-bottom: 100px;">SCROLL TO UNLOCK MORE PLOTS</div>
+
+    <div id="infoModal" class="modal">
+        <div class="modal-content">
+            <h2 id="modalTitle" style="font-family: 'Cinzel'; color: var(--ark-primary); margin-bottom: 30px;"></h2>
+            <p id="modalBody"></p>
+            <button onclick="closeInfo()" style="margin-top: 40px; background: none; border: 1px solid #333; color: #555; padding: 10px 30px; cursor: pointer;">[ CLOSE ]</button>
+        </div>
+    </div>
+
+    <div id="legacyDrawer" class="drawer">
+        <h2 style="font-family: 'Cinzel'; color: var(--ark-primary); letter-spacing: 5px; margin-bottom: 40px;">REGISTRATION</h2>
+        <input type="text" id="donorName" class="ark-input" placeholder="FULL NAME">
+        <input type="number" id="treeCount" class="ark-input" placeholder="NUMBER OF TREES">
+        <button onclick="submitLegacy()" class="legacy-btn" style="width: 100%;">Submit Request</button>
         
-        <div class="info-grid">
-            <div class="info-card">
-                <h3>Why Fruit Trees?</h3>
-                <p>Traditional reforestation often ignores immediate human needs. By planting fruit trees, we provide children with a sustainable source of nutrition while restoring the ecosystem.</p>
-            </div>
-            <div class="info-card">
-                <h3>Zero Cost Operations</h3>
-                <p>We have invested zero donor capital into this website or our marketing. Every dollar you send is converted directly into a sapling. Our team covers all personal expenses out of pocket.</p>
-            </div>
-            <div class="info-card">
-                <h3>Global Scalability</h3>
-                <p>We begin in Bangladesh, but our vision is for 1 Billion trees globally. We aim to reach every nation in need of ecological balance and food security for the next generation.</p>
-            </div>
+        <div style="margin-top: 50px;">
+            <h4 style="color: var(--ark-primary); font-size: 10px; letter-spacing: 3px; border-bottom: 1px solid #222; padding-bottom: 10px;">SECURE CHANNELS</h4>
+            <div class="pay-item"><h4>bKash Personal (01)</h4><p>01576940717</p></div>
+            <div class="pay-item"><h4>bKash Personal (02)</h4><p>01756206213</p></div>
+            <div class="pay-item"><h4>Binance UID</h4><p>912221034</p></div>
+            <div class="pay-item"><h4>USDT TRC20</h4><p>TTapBkTqrDnzHbWzek6wSBUTcJKFmR8Ws6</p></div>
+            <div class="pay-item"><h4>Bank Transfer</h4><p>Bank Name: [TBD]<br>A/C No: [TBD]</p></div>
         </div>
-    </section>
-
-    <section class="download-zone">
-        <h2 style="font-family: 'Cinzel'; letter-spacing: 5px;">SEARCH YOUR LEGACY</h2>
-        <p style="font-size: 12px; color: #666; margin-top: 10px;">Enter your Full Name to generate and download your official witness certificate.</p>
-        <div class="search-bar">
-            <input type="text" id="searchInput" placeholder="Enter Registered Name...">
-            <button class="search-btn" onclick="generateCertificate()">Download Card</button>
-        </div>
-    </section>
-
-    <section class="archive-section" id="archive">
-        <h2 style="font-family: 'Cinzel'; text-align: center; letter-spacing: 15px; margin-bottom: 60px; font-size: 18px; color: var(--ark-primary);">THE ARK ARCHIVE</h2>
-        <div id="plot-grid"></div>
-        <div id="load-trigger" style="height: 50px; text-align: center; color: #222; font-size: 10px; margin-top: 40px;">LOADING MORE PLOTS...</div>
-    </section>
-
-    <div id="portal-drawer">
-        <h2 style="font-family: 'Cinzel'; color: var(--ark-primary); margin-bottom: 40px; letter-spacing: 3px;">ETCH YOUR LEGACY</h2>
-        <div id="portal-form">
-            <input type="text" id="pName" class="ark-input" placeholder="FULL LEGAL NAME">
-            <input type="number" id="pCount" class="ark-input" placeholder="NUMBER OF TREES">
-            <input type="text" id="pSocial" class="ark-input" placeholder="SOCIAL MEDIA LINK">
-            <input type="text" id="pProof" class="ark-input" placeholder="TRANSACTION ID / PROOF">
-            
-            <button onclick="submitLegacy()" style="width: 100%; padding: 20px; background: var(--ark-primary); color: #fff; border: none; letter-spacing: 4px; font-weight: bold; cursor: pointer; margin-top: 20px;">SUBMIT REQUEST</button>
-            
-            <div style="margin-top: 50px; border-top: 1px solid #111; padding-top: 30px;">
-                <h4 style="font-size: 10px; color: var(--ark-primary); letter-spacing: 2px;">SECURE CHANNELS</h4>
-                <p style="font-size: 12px; color: #555; margin-top: 15px; line-height: 2;">
-                    bKash Personal: 01576940717 / 01756206213<br>
-                    Binance UID: 912221034<br>
-                    USDT TRC20: TTapBkTqrDnzHbWzek6wSBUTcJKFmR8Ws6
-                </p>
-            </div>
-            <button onclick="toggleDrawer()" style="background: none; border: none; color: #333; margin-top: 40px; cursor: pointer;">[ CLOSE PORTAL ]</button>
-        </div>
-    </div>
-
-    <div id="cert-gen">
-        <h1 style="font-size: 40px;">ARK ETERNAL</h1>
-        <p style="letter-spacing: 5px; font-family: 'Inter'; font-size: 14px;">WITNESS CERTIFICATE</p>
-        <div style="margin: 50px 0; border-top: 1px solid #000; border-bottom: 1px solid #000; padding: 30px 0;">
-            <p style="font-size: 16px;">This record confirms that</p>
-            <h2 id="c-name" style="font-size: 35px; margin: 15px 0;">FULL NAME</h2>
-            <p>has planted <strong id="c-trees">0</strong> fruit-bearing trees</p>
-        </div>
-        <p style="font-family: 'Inter'; font-size: 11px; color: #555;">Verified Digital Record No: ARK-2026-LEGACY<br>www.arkarchive.com</p>
-    </div>
-
-    <div class="footer-triggers">
-        <div class="trigger-btn" onclick="openPortal()">Contribution Portal</div>
-        <a href="https://wa.me/8801576940717" target="_blank" class="trigger-btn" style="background: #fff; color: #000;">WhatsApp Support</a>
+        <p onclick="closeLegacy()" style="text-align: center; color: #444; cursor: pointer; margin-top: 20px;">[ CANCEL ]</p>
     </div>
 
     <script type="text/javascript">
@@ -215,73 +192,81 @@
         firebase.initializeApp(firebaseConfig);
         const db = firebase.database();
 
-        let plotCount = 0;
-        const perPage = 36;
-        let allDonors = [];
+        // 3 Portal Content
+        const infoData = {
+            why: {
+                title: "Why Fruit Trees?",
+                body: "Traditional reforestation often ignores immediate human needs. By planting fruit trees, we provide children with a sustainable source of nutrition while restoring the ecosystem. It is a dual-purpose investment in the planet and the next generation."
+            },
+            cost: {
+                title: "Zero Cost Operations",
+                body: "Transparency is our foundation. We have invested zero donor capital into this website or our operations. Every dollar you send is converted directly into a sapling. Our team covers all personal expenses, transportation, and labor costs out of pocket."
+            },
+            scale: {
+                title: "Global Scalability",
+                body: "We begin in Bangladesh, but our vision is for 1 Billion trees globally. We aim to reach every nation in need of ecological balance and food security for the next generation. Our mission expands beyond borders."
+            }
+        };
 
-        // Sync Data
+        function openInfo(type) {
+            document.getElementById('modalTitle').innerText = infoData[type].title;
+            document.getElementById('modalBody').innerText = infoData[type].body;
+            document.getElementById('infoModal').style.display = 'flex';
+        }
+        function closeInfo() { document.getElementById('infoModal').style.display = 'none'; }
+
+        function openLegacy() { document.getElementById('legacyDrawer').classList.add('open'); }
+        function closeLegacy() { document.getElementById('legacyDrawer').classList.remove('open'); }
+
+        // Live Counter
         db.ref('stats/totalTrees').on('value', snap => {
             document.getElementById('liveCounter').innerText = (snap.val() || 0).toLocaleString();
         });
 
+        // Infinite Scroll Plots (7 per row)
+        let plotIdx = 0;
+        const perPage = 35; // 7 columns * 5 rows initially
+        let allDonors = [];
+
         db.ref('donors').on('value', snap => {
             allDonors = [];
-            snap.forEach(child => { allDonors.push(child.val()); });
+            snap.forEach(c => { allDonors.push(c.val()); });
             renderPlots();
         });
 
-        // Infinite Scroll Logic
+        function renderPlots() {
+            const grid = document.getElementById('mainGrid');
+            const target = plotIdx + perPage;
+            for(let i = plotIdx; i < target && i < allDonors.length; i++) {
+                const d = allDonors[i];
+                grid.innerHTML += `
+                    <div class="plot-unit">
+                        <div class="plot-circle" onclick="window.open('${d.social || '#'}', '_blank')">
+                            <img src="${d.imageUrl || 'https://via.placeholder.com/100'}" alt="${d.name}">
+                        </div>
+                        <div class="plot-name">${d.name}</div>
+                        <div class="plot-trees">${d.trees} TREES DONATED</div>
+                        <div class="plot-kids">Helping ${d.trees} students</div>
+                    </div>
+                `;
+                plotIdx++;
+            }
+        }
+
         window.addEventListener('scroll', () => {
-            if ((window.innerHeight + window.scrollY) >= document.body.offsetHeight - 200) {
+            if ((window.innerHeight + window.scrollY) >= document.body.offsetHeight - 100) {
                 renderPlots();
             }
         });
 
-        function renderPlots() {
-            const grid = document.getElementById('plot-grid');
-            const limit = plotCount + perPage;
-            for (let i = plotCount; i < limit && i < allDonors.length; i++) {
-                const d = allDonors[i];
-                grid.innerHTML += `
-                    <div class="plot-card">
-                        <img src="${d.imageUrl || 'https://via.placeholder.com/100'}" class="plot-img">
-                        <div style="font-size: 11px; letter-spacing: 1px; color: #fff;">${d.name}</div>
-                        <div style="font-size: 9px; color: var(--ark-primary); margin-top: 8px;">${d.trees} TREES</div>
-                    </div>
-                `;
-                plotCount++;
-            }
-        }
-
-        // Certificate Logic
-        function generateCertificate() {
-            const query = document.getElementById('searchInput').value.toLowerCase();
-            const donor = allDonors.find(d => d.name.toLowerCase().includes(query));
-            if (donor) {
-                document.getElementById('c-name').innerText = donor.name.toUpperCase();
-                document.getElementById('c-trees').innerText = donor.trees;
-                const area = document.getElementById('cert-gen');
-                html2canvas(area).then(canvas => {
-                    const link = document.createElement('a');
-                    link.download = `ARK_Certificate_${donor.name}.png`;
-                    link.href = canvas.toDataURL();
-                    link.click();
-                    confetti({ particleCount: 150, spread: 70 });
-                });
-            } else {
-                alert("Name not found in active archive.");
-            }
-        }
-
-        function toggleDrawer() { document.getElementById('portal-drawer').classList.toggle('open'); }
-        function openPortal() { toggleDrawer(); }
-        
         function submitLegacy() {
-            const name = document.getElementById('pName').value;
-            if(!name) return;
-            confetti({ particleCount: 100, origin: { y: 0.8 } });
-            alert("Request Received. Verification starts now via WhatsApp.");
-            toggleDrawer();
+            const name = document.getElementById('donorName').value;
+            const count = document.getElementById('treeCount').value;
+            if(!name || !count) return alert("Please fill details");
+            
+            confetti({ particleCount: 150, spread: 70, colors: ['#1E5128', '#ffffff'] });
+            alert("Application Submitted. Please verify on WhatsApp with payment proof.");
+            closeLegacy();
         }
     </script>
 </body>
