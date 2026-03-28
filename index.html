@@ -3,209 +3,210 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>The July Legacy | 1 Billion Trees Mission</title>
-    
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
-    
+    <title>THE JULY LEGACY | 1 BILLION TREES MISSION</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-database-compat.js"></script>
 
     <style>
-        :root {
-            --nature-green: #2D5A27;
-            --soft-white: #F9FBFA;
-            --dark-oak: #1A1A1A;
-            --gold-leaf: #D4AF37;
-        }
-
-        * { box-sizing: border-box; margin: 0; padding: 0; }
-        body { font-family: 'Inter', sans-serif; background: var(--soft-white); color: var(--dark-oak); scroll-behavior: smooth; }
-
-        /* --- Minimal Header --- */
-        nav {
-            padding: 30px 5%; display: flex; justify-content: space-between; align-items: center;
-            position: sticky; top: 0; background: rgba(249, 251, 250, 0.9); backdrop-filter: blur(10px); z-index: 1000;
-        }
-        .logo { font-family: 'Playfair Display', serif; font-size: 24px; font-weight: 700; color: var(--nature-green); }
-        .nav-links a { text-decoration: none; color: var(--dark-oak); font-size: 13px; font-weight: 600; letter-spacing: 1px; margin-left: 30px; border-bottom: 2px solid transparent; transition: 0.3s; }
-        .nav-links a:hover { border-color: var(--nature-green); }
-
-        /* --- Hero Section --- */
-        .hero {
-            height: 80vh; display: flex; flex-direction: column; justify-content: center; align-items: center;
-            text-align: center; padding: 0 10%; background: linear-gradient(to bottom, #e8f5e9, var(--soft-white));
-        }
-        .hero h1 { font-family: 'Playfair Display', serif; font-size: clamp(32px, 8vw, 64px); line-height: 1.1; margin-bottom: 20px; }
-        .hero p { max-width: 650px; font-size: 18px; color: #555; line-height: 1.6; margin-bottom: 40px; }
-        .btn-primary { background: var(--nature-green); color: white; padding: 18px 40px; border: none; border-radius: 50px; font-weight: 600; cursor: pointer; text-decoration: none; transition: 0.3s; }
-        .btn-primary:hover { transform: scale(1.05); box-shadow: 0 10px 20px rgba(45, 90, 39, 0.2); }
-
-        /* --- Donation & Payment Section --- */
-        .donate-section { padding: 100px 5%; background: white; border-radius: 50px 50px 0 0; margin-top: -50px; }
-        .section-title { text-align: center; margin-bottom: 60px; }
-        .section-title h2 { font-family: 'Playfair Display', serif; font-size: 36px; margin-bottom: 10px; }
+        :root { --gold: #FCD535; --green: #2D5A27; --black: #000; --white: #fff; --grey: #1a1a1a; }
         
-        .payment-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 30px; max-width: 1100px; margin: 0 auto; }
-        .payment-card { background: #f4f7f5; padding: 40px; border-radius: 24px; transition: 0.3s; border: 1px solid transparent; }
-        .payment-card:hover { border-color: var(--nature-green); background: white; box-shadow: 0 20px 40px rgba(0,0,0,0.05); }
-        .payment-card h3 { color: var(--nature-green); margin-bottom: 15px; font-size: 20px; }
-        .payment-card p { font-family: monospace; font-size: 15px; color: #333; background: #e0eadd; padding: 10px; border-radius: 8px; word-break: break-all; }
-
-        /* --- Donor Wall (The Grid) --- */
-        .donor-wall { padding: 100px 5%; background: var(--dark-oak); color: white; }
-        .donor-grid { 
-            display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); 
-            gap: 20px; max-width: 1200px; margin: 50px auto 0;
-        }
-        .donor-card { 
-            background: #222; border-radius: 15px; overflow: hidden; 
-            text-align: center; transition: 0.4s; position: relative;
-            text-decoration: none; color: white; display: block;
-        }
-        .donor-card:hover { transform: translateY(-10px); background: #2d2d2d; }
-        .donor-card img { width: 100%; aspect-ratio: 1/1; object-fit: cover; opacity: 0.8; transition: 0.3s; }
-        .donor-card:hover img { opacity: 1; }
+        body { margin: 0; padding: 0; background: var(--black); color: var(--white); font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; overflow-x: hidden; }
         
-        .donor-info { padding: 15px; }
-        .donor-info h4 { font-size: 14px; margin-bottom: 5px; color: var(--gold-leaf); }
-        .donor-info span { font-size: 11px; opacity: 0.7; text-transform: uppercase; letter-spacing: 1px; }
-        .tree-badge { 
-            position: absolute; top: 10px; right: 10px; background: var(--nature-green); 
-            color: white; font-size: 10px; padding: 5px 10px; border-radius: 20px; font-weight: bold; 
-        }
+        /* Header */
+        .header { padding: 20px 5%; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #111; }
+        .nav-links a { color: #888; text-decoration: none; font-size: 11px; letter-spacing: 2px; margin-right: 20px; text-transform: uppercase; }
+        .nav-links a:hover { color: var(--white); }
 
-        /* --- Footer --- */
-        footer { padding: 50px 5%; text-align: center; font-size: 12px; color: #888; letter-spacing: 1px; }
+        /* Title Area */
+        .title-container { text-align: center; padding: 60px 0; }
+        .main-logo { font-size: 45px; letter-spacing: 12px; text-transform: uppercase; margin: 0; font-weight: 900; }
+        .sub-tag { font-size: 9px; letter-spacing: 8px; color: var(--green); margin-top: 15px; font-weight: bold; }
 
-        @media (max-width: 768px) {
-            .nav-links { display: none; }
-            .hero h1 { font-size: 36px; }
-            .donor-grid { grid-template-columns: repeat(3, 1fr); gap: 10px; }
+        /* Hero & FAQ */
+        .hero-flex { display: flex; flex-wrap: wrap; justify-content: space-around; padding: 0 8%; gap: 40px; margin-bottom: 80px; }
+        .manifesto-box { flex: 1; min-width: 300px; }
+        .manifesto-box p { font-size: 14px; line-height: 1.8; color: #aaa; font-style: italic; }
+        
+        .faq-portal { flex: 1; min-width: 300px; }
+        .faq-item { border-bottom: 1px solid #111; padding: 12px 0; cursor: pointer; }
+        .faq-question { font-size: 11px; font-weight: bold; display: flex; justify-content: space-between; color: #fff; text-transform: uppercase; letter-spacing: 1px; }
+        .faq-answer { max-height: 0; overflow: hidden; transition: 0.3s; font-size: 10px; color: #666; margin-top: 8px; line-height: 1.6; }
+        .faq-item.active .faq-answer { max-height: 100px; }
+
+        /* Plot Grid */
+        .plot-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); gap: 30px; padding: 0 8% 100px; justify-items: center; }
+        .plot-wrapper { display: flex; flex-direction: column; align-items: center; text-align: center; }
+        
+        .plot-circle { 
+            width: 100px; height: 100px; border-radius: 50%; border: 1px solid #222; 
+            display: flex; flex-direction: column; justify-content: center; align-items: center; 
+            transition: 0.4s; position: relative; overflow: hidden; background: #050505;
         }
+        .plot-circle.active { border: 2px solid var(--green); box-shadow: 0 0 20px rgba(45, 90, 39, 0.3); cursor: pointer; }
+        .plot-circle b { font-size: 14px; letter-spacing: 1px; }
+        .plot-circle span { font-size: 8px; opacity: 0.5; text-transform: uppercase; }
+
+        .donor-name { font-size: 11px; font-weight: bold; margin-top: 12px; color: #fff; text-transform: uppercase; letter-spacing: 1px; }
+        .tree-count { font-size: 9px; color: var(--green); font-weight: bold; margin-top: 4px; letter-spacing: 1px; }
+
+        /* Buttons & Payment Drawer */
+        .rr-btn { background: none; border: 1px solid var(--white); color: var(--white); padding: 12px 30px; font-size: 10px; letter-spacing: 3px; cursor: pointer; transition: 0.3s; text-transform: uppercase; }
+        .rr-btn:hover { background: var(--white); color: var(--black); }
+
+        .payment-box { background: #080808; border: 1px solid #111; padding: 25px; margin-top: 30px; }
+        .payment-box h4 { font-size: 10px; letter-spacing: 3px; color: var(--gold); margin-bottom: 15px; }
+        .pay-item { font-family: monospace; font-size: 12px; color: #888; margin-bottom: 8px; cursor: pointer; }
+        .pay-item:hover { color: var(--white); }
+
+        footer { text-align: center; padding: 50px; font-size: 10px; color: #333; letter-spacing: 4px; border-top: 1px solid #111; }
+
+        /* Modal */
+        .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.95); z-index: 9999; justify-content: center; align-items: center; }
+        .modal-content { background: #050505; border: 1px solid #222; padding: 40px; text-align: center; max-width: 400px; width: 90%; }
+        
+        @media (max-width: 600px) { .main-logo { font-size: 28px; } .plot-grid { grid-template-columns: repeat(3, 1fr); gap: 15px; } }
     </style>
 </head>
 <body>
 
-    <nav>
-        <div class="logo">The July Legacy</div>
-        <div class="nav-links">
-            <a href="#mission">Mission</a>
-            <a href="#donate">Contribute</a>
-            <a href="#wall">Legacy Wall</a>
-            <a href="https://wa.me/8801576940717">Support</a>
+<header class="header">
+    <div class="nav-links">
+        <a href="https://wa.me/8801576940717" target="_blank">Support</a>
+        <a href="https://x.com/kawsar6700" target="_blank">Twitter</a>
+    </div>
+    <div class="rr-btn" onclick="document.getElementById('buyModal').style.display='flex'">Claim Plot</div>
+</header>
+
+<div class="title-container">
+    <h1 class="main-logo">The July Legacy</h1>
+    <div class="sub-tag">1 BILLION TREES MISSION</div>
+</div>
+
+<div class="hero-flex">
+    <div class="manifesto-box">
+        <p>
+            "History is not just lived; it is preserved for eternity. This archive is a silent witness to the courage of July. By claiming a plot, you are securing a fragment of the revolution forever while planting trees for our future."
+        </p>
+        <div class="payment-box">
+            <h4>ACQUISITION GATEWAYS</h4>
+            <div class="pay-item" onclick="copyV('912221034')">BINANCE UID: 912221034</div>
+            <div class="pay-item" onclick="copyV('TTapBkTqrDnzHbWzek6wSBUTcJKFmR8Ws6')">USDT TRC20: TTap...Ws6</div>
+            <div class="pay-item" onclick="copyV('01756206213')">BKASH PERSONAL: 01756206213</div>
         </div>
-    </nav>
+    </div>
 
-    <section class="hero" id="mission">
-        <h1>1 Billion Trees.<br>One Eternal Legacy.</h1>
-        <p>আমরা জুলাইয়ের বিপ্লবকে অমর করে রাখতে চাই প্রকৃতির মাধ্যমে। প্রতিটি গাছ একটি প্রাণ, একটি ইতিহাস। আজই আপনার অংশটি রোপণ করুন।</p>
-        <a href="#donate" class="btn-primary">Plant a Tree Now</a>
-    </section>
-
-    <section class="donate-section" id="donate">
-        <div class="section-title">
-            <h2>Payment Gateways</h2>
-            <p>প্রতিটি গাছ মাত্র ১ ডলার বা ১২০ টাকা</p>
+    <div class="faq-portal">
+        <div class="faq-item" onclick="toggleFaq(this)">
+            <div class="faq-question">Why should I claim a plot? <i class="fas fa-chevron-down"></i></div>
+            <div class="faq-answer">To preserve your identity in the historic July movement archive forever.</div>
         </div>
-        
-        <div class="payment-grid">
-            <div class="payment-card">
-                <h3>Binance Pay</h3>
-                <span style="font-size: 12px; color: #666;">UID (Copy below)</span>
-                <p onclick="copyText('912221034')">912221034</p>
-                <br>
-                <span style="font-size: 12px; color: #666;">USDT (TRC20)</span>
-                <p onclick="copyText('TTapBkTqrDnzHbWzek6wSBUTcJKFmR8Ws6')">TTapBkTqrDnzHbWzek6wSBUTcJKFmR8Ws6</p>
-            </div>
-
-            <div class="payment-card">
-                <h3>Local (bKash/Nagad)</h3>
-                <span style="font-size: 12px; color: #666;">Personal Number</span>
-                <p onclick="copyText('01576940717')">01576940717</p>
-                <p style="margin-top: 10px;" onclick="copyText('01756206213')">01756206213</p>
-            </div>
+        <div class="faq-item" onclick="toggleFaq(this)">
+            <div class="faq-question">Is it a one-time payment? <i class="fas fa-chevron-down"></i></div>
+            <div class="faq-answer">Yes. One-time acquisition for a lifetime presence in the digital monument.</div>
         </div>
-        
-        <div style="text-align: center; margin-top: 50px;">
-            <p style="font-size: 14px; color: #666;">পেমেন্ট করার পর ট্রানজেকশন আইডি এবং আপনার ছবি হোয়াটসঅ্যাপে পাঠান।</p>
-            <a href="https://wa.me/8801576940717" style="color: var(--nature-green); font-weight: bold; text-decoration: none;">Send Receipt →</a>
+        <div class="faq-item" onclick="toggleFaq(this)">
+            <div class="faq-question">What is the plot size? <i class="fas fa-chevron-down"></i></div>
+            <div class="faq-answer">Each plot is 100x100 virtual space dedicated to your verified identity.</div>
         </div>
-    </section>
-
-    <section class="donor-wall" id="wall">
-        <div class="section-title">
-            <h2 style="color: white;">Legacy Wall of Donors</h2>
-            <p style="color: #aaa;">যারা এই মহৎ উদ্দেশ্যে আমাদের সাথে আছেন</p>
+        <div class="faq-item" onclick="toggleFaq(this)">
+            <div class="faq-question">Can I add my social link? <i class="fas fa-chevron-down"></i></div>
+            <div class="faq-answer">Yes, each donor photo is linked directly to their provided social profile.</div>
         </div>
+        <div class="faq-item" onclick="toggleFaq(this)">
+            <div class="faq-question">Any environmental impact? <i class="fas fa-chevron-down"></i></div>
+            <div class="faq-answer">Absolutely. Every single plot contributes directly to our 1 Billion Trees mission.</div>
+        </div>
+        <div class="faq-item" onclick="toggleFaq(this)">
+            <div class="faq-question">Is this data secure? <i class="fas fa-chevron-down"></i></div>
+            <div class="faq-answer">The archive is secured with Firebase encryption and persistent storage.</div>
+        </div>
+        <div class="faq-item" onclick="toggleFaq(this)">
+            <div class="faq-question">Can I change my photo later? <i class="fas fa-chevron-down"></i></div>
+            <div class="faq-answer">Yes, you can update your information by contacting our concierge support.</div>
+        </div>
+        <div class="faq-item" onclick="toggleFaq(this)">
+            <div class="faq-question">Who owns this archive? <i class="fas fa-chevron-down"></i></div>
+            <div class="faq-answer">Owned by ARK ARCHIVE, a sovereign digital monument dedicated to July.</div>
+        </div>
+    </div>
+</div>
 
-        <div class="donor-grid" id="donorGrid">
-            </div>
-    </section>
+<div class="plot-grid" id="plotGrid">
+    </div>
 
-    <footer>
-        © 2026 THE JULY LEGACY | MANAGED BY ARK ARCHIVE OFFICIAL
-    </footer>
+<div id="buyModal" class="modal">
+    <div class="modal-content">
+        <h2 style="letter-spacing: 5px;">RESERVATION</h2>
+        <p style="font-size: 10px; color: #555;">Send details to our concierge after payment.</p>
+        <button class="rr-btn" onclick="window.open('https://wa.me/8801576940717')">WhatsApp Support</button>
+        <p style="margin-top: 20px; font-size: 9px; cursor: pointer;" onclick="document.getElementById('buyModal').style.display='none'">CLOSE</p>
+    </div>
+</div>
 
-    <script>
-        // --- Firebase Config ---
-        const firebaseConfig = {
-            apiKey: "AIzaSyCAdnfu2R82xbC7H85n_9mvQBE58X3TjbA",
-            authDomain: "the-5k-elite-legacy.firebaseapp.com",
-            databaseURL: "https://the-5k-elite-legacy-default-rtdb.firebaseio.com",
-            projectId: "the-5k-elite-legacy",
-            storageBucket: "the-5k-elite-legacy.firebasestorage.app",
-            messagingSenderId: "440824313752",
-            appId: "1:440824313752:web:2c93344dcfe2ba0a4c5ded"
-        };
+<footer>
+    THE JULY LEGACY • ARK ARCHIVE OFFICIAL • ESTABLISHED BY KAWSAR AHMED
+</footer>
 
-        firebase.initializeApp(firebaseConfig);
-        const db = firebase.database();
+<script>
+    function toggleFaq(el) { el.classList.toggle('active'); }
+    function copyV(txt) { navigator.clipboard.writeText(txt); alert("Copied: " + txt); }
 
-        // --- Load Donors Logic ---
-        const donorGrid = document.getElementById('donorGrid');
+    const firebaseConfig = {
+        apiKey: "AIzaSyCAdnfu2R82xbC7H85n_9mvQBE58X3TjbA",
+        authDomain: "the-5k-elite-legacy.firebaseapp.com",
+        databaseURL: "https://the-5k-elite-legacy-default-rtdb.firebaseio.com",
+        projectId: "the-5k-elite-legacy",
+        storageBucket: "the-5k-elite-legacy.firebasestorage.app",
+        messagingSenderId: "440824313752",
+        appId: "1:440824313752:web:2c93344dcfe2ba0a4c5ded"
+    };
 
-        // Initial Empty Plots (Placements)
+    firebase.initializeApp(firebaseConfig);
+    const db = firebase.database();
+
+    function initPlots() {
+        const grid = document.getElementById('plotGrid');
         for (let i = 1; i <= 36; i++) {
-            const emptyCard = document.createElement('div');
-            emptyCard.className = 'donor-card';
-            emptyCard.id = `donor-${i}`;
-            emptyCard.innerHTML = `
-                <img src="https://via.placeholder.com/300/1a1a1a/666?text=Claim+Plot" alt="Vacant">
-                <div class="donor-info">
-                    <h4>Vacant Slot</h4>
-                    <span>Join the Mission</span>
-                </div>
-            `;
-            donorGrid.appendChild(emptyCard);
-        }
+            const wrapper = document.createElement('div');
+            wrapper.className = 'plot-wrapper';
+            
+            const circle = document.createElement('div');
+            circle.className = 'plot-circle';
+            circle.id = 'plot-' + i;
+            circle.innerHTML = `<span>PLOT</span><b>#${i}</b>`;
+            
+            const nameEl = document.createElement('div');
+            nameEl.className = 'donor-name';
+            nameEl.innerText = "AVAILABLE";
+            
+            const treeEl = document.createElement('div');
+            treeEl.className = 'tree-count';
+            treeEl.innerText = "0 TREES";
 
-        // Fetch Real Data from Firebase
-        db.ref('tree_donors').on('value', (snapshot) => {
-            const data = snapshot.val();
-            if (data) {
-                Object.keys(data).forEach(key => {
-                    const donor = data[key];
-                    const slot = document.getElementById(`donor-${donor.slotNumber}`);
-                    if (slot) {
-                        slot.href = donor.profileLink; // Facebook/Instagram Link
-                        slot.target = "_blank";
-                        slot.innerHTML = `
-                            <div class="tree-badge">${donor.treeCount} Trees</div>
-                            <img src="${donor.photoUrl}" alt="${donor.name}">
-                            <div class="donor-info">
-                                <h4>${donor.name}</h4>
-                                <span>Verified Donor</span>
-                            </div>
-                        `;
-                    }
-                });
-            }
-        });
+            // Firebase Integration
+            db.ref('donors/' + i).on('value', snap => {
+                const data = snap.val();
+                if(data) {
+                    circle.classList.add('active');
+                    circle.style.backgroundImage = `url(${data.imageUrl})`;
+                    circle.style.backgroundSize = 'cover';
+                    circle.innerHTML = "";
+                    nameEl.innerText = data.name;
+                    treeEl.innerText = data.trees + " TREES";
+                    circle.onclick = () => window.open(data.profileLink, '_blank');
+                }
+            });
 
-        function copyText(text) {
-            navigator.clipboard.writeText(text);
-            alert("Copied: " + text);
+            wrapper.appendChild(circle);
+            wrapper.appendChild(nameEl);
+            wrapper.appendChild(treeEl);
+            grid.appendChild(wrapper);
         }
-    </script>
+    }
+    initPlots();
+</script>
 </body>
 </html>
