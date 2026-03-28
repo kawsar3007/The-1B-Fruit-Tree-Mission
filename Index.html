@@ -29,7 +29,7 @@
             overflow-x: hidden;
         }
 
-        /* Hero Section - Rolls Royce Minimalist Style */
+        /* Hero Section */
         .hero {
             height: 90vh;
             display: flex;
@@ -70,7 +70,7 @@
             color: #ccc;
         }
 
-        /* Donation Container */
+        /* Donation Form Section */
         .container {
             max-width: 800px;
             margin: -80px auto 100px;
@@ -95,7 +95,6 @@
             font-weight: 600;
         }
 
-        /* Form Styling */
         .input-group { margin-bottom: 40px; }
 
         input {
@@ -112,7 +111,7 @@
 
         input:focus { border-bottom: 1px solid var(--gold); }
 
-        /* Payment Tabs */
+        /* Gateway Tabs */
         .payment-tabs {
             display: flex;
             gap: 30px;
@@ -154,7 +153,8 @@
             font-family: monospace;
             margin-top: 10px;
             background: #111;
-            padding: 10px;
+            padding: 12px;
+            border: 1px solid #222;
         }
 
         .btn-confirm {
@@ -173,7 +173,7 @@
 
         .btn-confirm:hover { background: #e2b764; transform: translateY(-2px); }
 
-        /* Floating WhatsApp */
+        /* Floating WhatsApp Support */
         .whatsapp-float {
             position: fixed;
             bottom: 30px;
@@ -186,8 +186,6 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 24px;
-            text-decoration: none;
             box-shadow: 0 10px 25px rgba(0,0,0,0.3);
             z-index: 1000;
         }
@@ -195,7 +193,6 @@
         @media (max-width: 600px) {
             h1 { font-size: 2.2rem; }
             .donation-card { padding: 40px 20px; }
-            .payment-tabs { gap: 15px; }
         }
     </style>
 </head>
@@ -207,71 +204,69 @@
 
     <section class="hero">
         <h1>THE JULY LEGACY</h1>
-        <div class="tagline">Preserving History, Planting Life</div>
+        <div class="tagline">Providing Nutrition, Planting Balance</div>
         <div class="mission-text">
-            We are providing every student from Grade 1 to 10 with a fruit-bearing tree. This project is 100% self-funded for logistics; your donation goes strictly towards the saplings. Together, we restore nature's balance.
+            Our mission is to provide one fruit tree per student (Grade 1-10) in all schools of Bangladesh. $1 = 1 Fruit Tree. Logistics and personal expenses are covered 100% from our own pockets.
         </div>
     </section>
 
     <div class="container">
         <div class="donation-card">
             
-            <div id="donation-step-1">
-                <span class="section-title">01. Donor Information</span>
-                <div class="input-group">
-                    <input type="text" id="donorName" placeholder="Full Name" required>
-                </div>
-                
-                <span class="section-title">02. Gift Amount ($1 = 1 Tree)</span>
-                <div class="input-group">
-                    <input type="number" id="treeCount" placeholder="Number of Trees (Max 50)" max="50" min="1" required>
-                    <p style="font-size: 0.8rem; color: #555; margin-top: 10px;">Total Contribution: <span id="usdDisplay" style="color: var(--gold);">$0</span></p>
-                </div>
-
-                <span class="section-title">03. Select Payment Gateway</span>
-                <div class="payment-tabs">
-                    <button class="tab-btn active" onclick="showPortal('binance', this)">Binance</button>
-                    <button class="tab-btn" onclick="showPortal('bkash', this)">bKash</button>
-                    <button class="tab-btn" onclick="showPortal('bank', this)">Bank</button>
-                </div>
-
-                <div id="binance" class="portal-content active">
-                    <strong>Binance Pay UID:</strong>
-                    <div class="address-box">912221034</div>
-                    <br>
-                    <strong>USDT (TRC20) Address:</strong>
-                    <div class="address-box">TTapBkTqrDnzHbWzek6wSBUTcJKFmR8Ws6</div>
-                </div>
-
-                <div id="bkash" class="portal-content">
-                    <p>Send via Remitly / Taptap Send to:</p>
-                    <div class="address-box">+880 1756 206213</div>
-                    <div class="address-box">+880 1576 940717</div>
-                    <p style="font-size: 0.75rem; color: #666; margin-top: 10px;">Max $50 per transaction for mobile wallets.</p>
-                </div>
-
-                <div id="bank" class="portal-content">
-                    <p>Direct Bank Transfer (For large support):</p>
-                    <div style="font-size: 0.85rem; color: #aaa;">
-                        Recipient: [Pending Verification]<br>
-                        SWIFT: [Pending Verification]<br>
-                        A/C No: [Pending Verification]
-                    </div>
-                </div>
-
-                <span class="section-title">04. Verification Receipt</span>
-                <div class="input-group">
-                    <input type="text" id="txnId" placeholder="Enter Transaction ID or Reference No" required>
-                </div>
-
-                <button class="btn-confirm" onclick="submitToFirebase()">Finalize Donation</button>
+            <span class="section-title">01. Donor Profile</span>
+            <div class="input-group">
+                <input type="text" id="donorName" placeholder="Donor Name (Full Name)" required>
             </div>
+            
+            <span class="section-title">02. Gift Amount ($1 = 1 Tree)</span>
+            <div class="input-group">
+                <input type="number" id="treeCount" placeholder="Number of Trees (Max 50 per gift)" max="50" min="1" required>
+                <p style="font-size: 0.8rem; color: #555; margin-top: 10px;">Gift Total: <span id="usdDisplay" style="color: var(--gold); font-weight: bold;">$0</span></p>
+            </div>
+
+            <span class="section-title">03. Select Payment Gateway</span>
+            <div class="payment-tabs">
+                <button class="tab-btn active" onclick="showPortal('binance', this)">Binance</button>
+                <button class="tab-btn" onclick="showPortal('bkash', this)">bKash</button>
+                <button class="tab-btn" onclick="showPortal('bank', this)">Bank</button>
+            </div>
+
+            <div id="binance" class="portal-content active">
+                <strong>Pay via UID:</strong>
+                <div class="address-box">912221034</div>
+                <br>
+                <strong>USDT (TRC20) Address:</strong>
+                <div class="address-box">TTapBkTqrDnzHbWzek6wSBUTcJKFmR8Ws6</div>
+            </div>
+
+            <div id="bkash" class="portal-content">
+                <p>Global remittance via Remitly / Taptap Send / Sendwave:</p>
+                <div class="address-box">Personal: +880 1756 206213</div>
+                <div class="address-box">Personal: +880 1576 940717</div>
+            </div>
+
+            <div id="bank" class="portal-content">
+                <p>Institutional Banking Details:</p>
+                <div style="font-size: 0.85rem; color: #aaa;">
+                    Recipient: [Awaiting Verification]<br>
+                    Bank: [Awaiting Verification]<br>
+                    A/C: [Awaiting Verification]<br>
+                    SWIFT: [Awaiting Verification]
+                </div>
+            </div>
+
+            <span class="section-title">04. Receipt Verification</span>
+            <div class="input-group">
+                <input type="text" id="txnId" placeholder="Transaction ID / Receipt No" required>
+            </div>
+
+            <button class="btn-confirm" onclick="submitToFirebase()">Submit Gift & Plant Tree</button>
 
         </div>
     </div>
 
     <script>
-        // Firebase Config
+        // Your Firebase Configuration
         const firebaseConfig = {
             apiKey: "AIzaSyCAdnfu2R82xbC7H85n_9mvQBE58X3TjbA",
             authDomain: "the-5k-elite-legacy.firebaseapp.com",
@@ -285,7 +280,7 @@
         firebase.initializeApp(firebaseConfig);
         const db = firebase.database();
 
-        // UI Logic
+        // Portal Switching Logic
         function showPortal(id, btn) {
             document.querySelectorAll('.portal-content').forEach(p => p.classList.remove('active'));
             document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
@@ -293,41 +288,43 @@
             btn.classList.add('active');
         }
 
+        // Real-time USD Calculation
         const treeInput = document.getElementById('treeCount');
         const usdDisplay = document.getElementById('usdDisplay');
 
         treeInput.addEventListener('input', (e) => {
             let val = e.target.value;
             if(val > 50) {
-                alert("For security, maximum 50 trees per transaction. For larger amounts, please use Bank Transfer or multiple transactions.");
+                alert("For security and wallet limits, we accept a maximum of 50 trees per transaction. For larger contributions, please use multiple transactions.");
                 e.target.value = 50;
                 val = 50;
             }
-            usdDisplay.innerText = "$" + val;
+            usdDisplay.innerText = "$" + (val || 0);
         });
 
-        // Submission Logic
+        // Data Submission Logic
         function submitToFirebase() {
             const name = document.getElementById('donorName').value;
-            const trees = document.getElementById('treeCount').value;
+            const count = document.getElementById('treeCount').value;
             const txn = document.getElementById('txnId').value;
 
-            if (!name || !trees || !txn) {
-                alert("All fields are required to verify your legacy.");
+            if (!name || !count || !txn) {
+                alert("Please complete all sections to ensure your donation is verified.");
                 return;
             }
 
+            // Reference to 'donations' node using TxnID as unique key
             db.ref('donations/' + txn).set({
                 donorName: name,
-                treeCount: trees,
-                txnId: txn,
-                status: "pending",
+                treeCount: count,
+                transactionId: txn,
+                status: "pending", // Default status for manual verification
                 timestamp: Date.now()
             }).then(() => {
-                alert("Success! Your contribution has been submitted for verification. Thank you for your kindness.");
+                alert("Thank you! Your donation is now being verified. Your name will appear on the wall soon.");
                 window.location.reload();
             }).catch(err => {
-                alert("System error. Please contact WhatsApp support.");
+                alert("Database connection error. Please try again or contact support.");
                 console.error(err);
             });
         }
