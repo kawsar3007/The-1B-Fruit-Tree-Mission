@@ -1,0 +1,336 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The July Legacy | 1 Billion Fruit Trees Mission</title>
+    
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&family=Montserrat:wght@300;400;600&display=swap" rel="stylesheet">
+    
+    <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-database-compat.js"></script>
+
+    <style>
+        :root {
+            --gold: #C5A059;
+            --black: #050505;
+            --white: #F5F5F5;
+            --dark-gray: #121212;
+            --soft-gray: #888;
+        }
+
+        * { box-sizing: border-box; }
+
+        body {
+            margin: 0;
+            background-color: var(--black);
+            color: var(--white);
+            font-family: 'Montserrat', sans-serif;
+            overflow-x: hidden;
+        }
+
+        /* Hero Section - Rolls Royce Minimalist Style */
+        .hero {
+            height: 90vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            background: linear-gradient(rgba(0,0,0,0.85), rgba(0,0,0,0.85)), 
+                        url('https://images.unsplash.com/photo-1464306208223-e0b4495a5553?q=80&w=2070');
+            background-size: cover;
+            background-position: center;
+            border-bottom: 1px solid var(--gold);
+            padding: 20px;
+        }
+
+        h1 {
+            font-family: 'Cinzel', serif;
+            font-size: clamp(2rem, 8vw, 4rem);
+            color: var(--gold);
+            margin: 0;
+            letter-spacing: 10px;
+            text-transform: uppercase;
+        }
+
+        .tagline {
+            font-size: 1.1rem;
+            color: var(--soft-gray);
+            margin-top: 15px;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+        }
+
+        .mission-text {
+            max-width: 700px;
+            margin-top: 30px;
+            font-weight: 300;
+            line-height: 1.8;
+            color: #ccc;
+        }
+
+        /* Donation Container */
+        .container {
+            max-width: 800px;
+            margin: -80px auto 100px;
+            padding: 0 20px;
+        }
+
+        .donation-card {
+            background: var(--dark-gray);
+            padding: 60px 40px;
+            border-radius: 2px;
+            border: 1px solid #222;
+            box-shadow: 0 40px 100px rgba(0,0,0,0.8);
+        }
+
+        .section-title {
+            display: block;
+            color: var(--gold);
+            font-size: 0.8rem;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            margin-bottom: 25px;
+            font-weight: 600;
+        }
+
+        /* Form Styling */
+        .input-group { margin-bottom: 40px; }
+
+        input {
+            width: 100%;
+            background: transparent;
+            border: none;
+            border-bottom: 1px solid #333;
+            color: var(--white);
+            padding: 15px 0;
+            font-size: 1.2rem;
+            outline: none;
+            transition: border-color 0.4s;
+        }
+
+        input:focus { border-bottom: 1px solid var(--gold); }
+
+        /* Payment Tabs */
+        .payment-tabs {
+            display: flex;
+            gap: 30px;
+            margin-bottom: 30px;
+            border-bottom: 1px solid #222;
+        }
+
+        .tab-btn {
+            background: none;
+            border: none;
+            color: #444;
+            padding: 15px 0;
+            cursor: pointer;
+            font-size: 0.9rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            transition: 0.3s;
+        }
+
+        .tab-btn.active {
+            color: var(--gold);
+            border-bottom: 2px solid var(--gold);
+        }
+
+        .portal-content {
+            display: none;
+            padding: 25px;
+            background: #0a0a0a;
+            border: 1px solid #1a1a1a;
+            margin-bottom: 40px;
+            font-size: 0.95rem;
+        }
+
+        .portal-content.active { display: block; }
+
+        .address-box {
+            color: var(--gold);
+            word-break: break-all;
+            font-family: monospace;
+            margin-top: 10px;
+            background: #111;
+            padding: 10px;
+        }
+
+        .btn-confirm {
+            width: 100%;
+            background: var(--gold);
+            color: #000;
+            border: none;
+            padding: 20px;
+            font-size: 1rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        .btn-confirm:hover { background: #e2b764; transform: translateY(-2px); }
+
+        /* Floating WhatsApp */
+        .whatsapp-float {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            background: #25D366;
+            color: white;
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            text-decoration: none;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.3);
+            z-index: 1000;
+        }
+
+        @media (max-width: 600px) {
+            h1 { font-size: 2.2rem; }
+            .donation-card { padding: 40px 20px; }
+            .payment-tabs { gap: 15px; }
+        }
+    </style>
+</head>
+<body>
+
+    <a href="https://wa.me/8801576940717" class="whatsapp-float" target="_blank">
+        <svg fill="#FFFFFF" width="30px" height="30px" viewBox="0 0 24 24"><path d="M12.031 6.172c-3.181 0-5.767 2.586-5.768 5.766-.001 1.298.38 2.27 1.019 3.287l-.582 2.128 2.182-.573c.978.58 1.911.928 3.145.929 3.178 0 5.767-2.587 5.768-5.766 0-3.187-2.59-5.771-5.764-5.771zm3.392 8.244c-.144.405-.837.774-1.17.824-.299.045-.677.063-1.092-.069-.252-.08-.575-.187-.988-.365-1.739-.751-2.874-2.502-2.961-2.617-.087-.116-.708-.94-.708-1.793s.448-1.273.607-1.446c.159-.173.346-.217.462-.217s.231.006.332.009c.109.004.253-.041.397.303.144.344.491 1.199.534 1.286.044.087.073.188.014.303-.058.116-.087.188-.173.289l-.26.303c-.087.101-.177.211-.077.385.101.173.448.741.96 1.201.66.592 1.216.774 1.389.86.173.087.275.072.376-.044l.433-.506c.101-.116.202-.087.332-.043s.838.397.982.469c.145.072.242.108.278.173.036.065.036.376-.108.781z"/></svg>
+    </a>
+
+    <section class="hero">
+        <h1>THE JULY LEGACY</h1>
+        <div class="tagline">Preserving History, Planting Life</div>
+        <div class="mission-text">
+            We are providing every student from Grade 1 to 10 with a fruit-bearing tree. This project is 100% self-funded for logistics; your donation goes strictly towards the saplings. Together, we restore nature's balance.
+        </div>
+    </section>
+
+    <div class="container">
+        <div class="donation-card">
+            
+            <div id="donation-step-1">
+                <span class="section-title">01. Donor Information</span>
+                <div class="input-group">
+                    <input type="text" id="donorName" placeholder="Full Name" required>
+                </div>
+                
+                <span class="section-title">02. Gift Amount ($1 = 1 Tree)</span>
+                <div class="input-group">
+                    <input type="number" id="treeCount" placeholder="Number of Trees (Max 50)" max="50" min="1" required>
+                    <p style="font-size: 0.8rem; color: #555; margin-top: 10px;">Total Contribution: <span id="usdDisplay" style="color: var(--gold);">$0</span></p>
+                </div>
+
+                <span class="section-title">03. Select Payment Gateway</span>
+                <div class="payment-tabs">
+                    <button class="tab-btn active" onclick="showPortal('binance', this)">Binance</button>
+                    <button class="tab-btn" onclick="showPortal('bkash', this)">bKash</button>
+                    <button class="tab-btn" onclick="showPortal('bank', this)">Bank</button>
+                </div>
+
+                <div id="binance" class="portal-content active">
+                    <strong>Binance Pay UID:</strong>
+                    <div class="address-box">912221034</div>
+                    <br>
+                    <strong>USDT (TRC20) Address:</strong>
+                    <div class="address-box">TTapBkTqrDnzHbWzek6wSBUTcJKFmR8Ws6</div>
+                </div>
+
+                <div id="bkash" class="portal-content">
+                    <p>Send via Remitly / Taptap Send to:</p>
+                    <div class="address-box">+880 1756 206213</div>
+                    <div class="address-box">+880 1576 940717</div>
+                    <p style="font-size: 0.75rem; color: #666; margin-top: 10px;">Max $50 per transaction for mobile wallets.</p>
+                </div>
+
+                <div id="bank" class="portal-content">
+                    <p>Direct Bank Transfer (For large support):</p>
+                    <div style="font-size: 0.85rem; color: #aaa;">
+                        Recipient: [Pending Verification]<br>
+                        SWIFT: [Pending Verification]<br>
+                        A/C No: [Pending Verification]
+                    </div>
+                </div>
+
+                <span class="section-title">04. Verification Receipt</span>
+                <div class="input-group">
+                    <input type="text" id="txnId" placeholder="Enter Transaction ID or Reference No" required>
+                </div>
+
+                <button class="btn-confirm" onclick="submitToFirebase()">Finalize Donation</button>
+            </div>
+
+        </div>
+    </div>
+
+    <script>
+        // Firebase Config
+        const firebaseConfig = {
+            apiKey: "AIzaSyCAdnfu2R82xbC7H85n_9mvQBE58X3TjbA",
+            authDomain: "the-5k-elite-legacy.firebaseapp.com",
+            databaseURL: "https://the-5k-elite-legacy-default-rtdb.firebaseio.com",
+            projectId: "the-5k-elite-legacy",
+            storageBucket: "the-5k-elite-legacy.firebasestorage.app",
+            messagingSenderId: "440824313752",
+            appId: "1:440824313752:web:2c93344dcfe2ba0a4c5ded"
+        };
+
+        firebase.initializeApp(firebaseConfig);
+        const db = firebase.database();
+
+        // UI Logic
+        function showPortal(id, btn) {
+            document.querySelectorAll('.portal-content').forEach(p => p.classList.remove('active'));
+            document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+            document.getElementById(id).classList.add('active');
+            btn.classList.add('active');
+        }
+
+        const treeInput = document.getElementById('treeCount');
+        const usdDisplay = document.getElementById('usdDisplay');
+
+        treeInput.addEventListener('input', (e) => {
+            let val = e.target.value;
+            if(val > 50) {
+                alert("For security, maximum 50 trees per transaction. For larger amounts, please use Bank Transfer or multiple transactions.");
+                e.target.value = 50;
+                val = 50;
+            }
+            usdDisplay.innerText = "$" + val;
+        });
+
+        // Submission Logic
+        function submitToFirebase() {
+            const name = document.getElementById('donorName').value;
+            const trees = document.getElementById('treeCount').value;
+            const txn = document.getElementById('txnId').value;
+
+            if (!name || !trees || !txn) {
+                alert("All fields are required to verify your legacy.");
+                return;
+            }
+
+            db.ref('donations/' + txn).set({
+                donorName: name,
+                treeCount: trees,
+                txnId: txn,
+                status: "pending",
+                timestamp: Date.now()
+            }).then(() => {
+                alert("Success! Your contribution has been submitted for verification. Thank you for your kindness.");
+                window.location.reload();
+            }).catch(err => {
+                alert("System error. Please contact WhatsApp support.");
+                console.error(err);
+            });
+        }
+    </script>
+</body>
+</html>
