@@ -3,147 +3,148 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>THE JULY LEGACY | ARK ARCHIVE OFFICIAL</title>
+    <title>The July Legacy | 1 Billion Trees Mission</title>
     
-    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&family=Montserrat:wght@300;400;600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
     
     <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-database-compat.js"></script>
 
     <style>
-        :root { 
-            --black: #000000; 
-            --white: #ffffff; 
-            --gold: #FCD535;
-            --dark-gold: #C5A059;
-            --grey: #888888;
+        :root {
+            --nature-green: #2D5A27;
+            --soft-white: #F9FBFA;
+            --dark-oak: #1A1A1A;
+            --gold-leaf: #D4AF37;
         }
 
-        html { scroll-snap-type: y mandatory; scroll-behavior: smooth; }
-        body { 
-            margin: 0; padding: 0; background: var(--white); color: var(--black); 
-            font-family: 'Montserrat', sans-serif; overflow-x: hidden;
-        }
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body { font-family: 'Inter', sans-serif; background: var(--soft-white); color: var(--dark-oak); scroll-behavior: smooth; }
 
-        /* --- Luxury Navigation --- */
-        .nav-bar {
-            position: fixed; top: 0; width: 100%; height: 160px;
-            display: flex; flex-direction: column; align-items: center; justify-content: center;
-            z-index: 2000; background: rgba(255,255,255,0.95); backdrop-filter: blur(10px);
-            border-bottom: 1px solid #eee;
+        /* --- Minimal Header --- */
+        nav {
+            padding: 30px 5%; display: flex; justify-content: space-between; align-items: center;
+            position: sticky; top: 0; background: rgba(249, 251, 250, 0.9); backdrop-filter: blur(10px); z-index: 1000;
         }
-        .rr-logo { font-family: 'Cinzel', serif; font-size: 40px; font-weight: 900; letter-spacing: 5px; color: var(--black); }
-        .brand-subtitle { font-size: 10px; letter-spacing: 10px; text-transform: uppercase; margin-top: 10px; color: var(--dark-gold); }
+        .logo { font-family: 'Playfair Display', serif; font-size: 24px; font-weight: 700; color: var(--nature-green); }
+        .nav-links a { text-decoration: none; color: var(--dark-oak); font-size: 13px; font-weight: 600; letter-spacing: 1px; margin-left: 30px; border-bottom: 2px solid transparent; transition: 0.3s; }
+        .nav-links a:hover { border-color: var(--nature-green); }
 
         /* --- Hero Section --- */
-        .snap-section { 
-            height: 100vh; width: 100%; scroll-snap-align: start; 
-            display: flex; flex-direction: column; justify-content: center; 
-            align-items: center; text-align: center; padding: 0 10%; box-sizing: border-box; 
+        .hero {
+            height: 80vh; display: flex; flex-direction: column; justify-content: center; align-items: center;
+            text-align: center; padding: 0 10%; background: linear-gradient(to bottom, #e8f5e9, var(--soft-white));
         }
-        .title { font-family: 'Cinzel', serif; font-size: clamp(24px, 6vw, 50px); letter-spacing: 15px; text-transform: uppercase; margin-bottom: 20px; }
-        .quote { max-width: 700px; font-style: italic; font-size: 14px; color: var(--grey); line-height: 1.8; margin-bottom: 30px; }
+        .hero h1 { font-family: 'Playfair Display', serif; font-size: clamp(32px, 8vw, 64px); line-height: 1.1; margin-bottom: 20px; }
+        .hero p { max-width: 650px; font-size: 18px; color: #555; line-height: 1.6; margin-bottom: 40px; }
+        .btn-primary { background: var(--nature-green); color: white; padding: 18px 40px; border: none; border-radius: 50px; font-weight: 600; cursor: pointer; text-decoration: none; transition: 0.3s; }
+        .btn-primary:hover { transform: scale(1.05); box-shadow: 0 10px 20px rgba(45, 90, 39, 0.2); }
 
-        /* --- The 36 Legacy Plots (Grid System) --- */
-        .grid-container { 
-            padding: 150px 5% 100px; background: #fafafa; 
-            scroll-snap-align: start; min-height: 100vh;
-        }
-        .grid-header { text-align: center; margin-bottom: 60px; }
-        .grid-header h2 { font-family: 'Cinzel', serif; letter-spacing: 8px; font-size: 24px; }
-
-        .legacy-grid { 
-            display: grid; 
-            grid-template-columns: repeat(6, 1fr); /* 6x6 Grid for 36 Plots */
-            gap: 15px; max-width: 1200px; margin: 0 auto; 
-        }
-        .plot { 
-            aspect-ratio: 1/1; background: #fff; border: 1px solid #ddd; 
-            position: relative; overflow: hidden; transition: 0.4s; cursor: pointer;
-        }
-        .plot:hover { border-color: var(--dark-gold); transform: scale(1.05); z-index: 10; box-shadow: 0 20px 40px rgba(0,0,0,0.1); }
-        .plot img { width: 100%; height: 100%; object-fit: cover; filter: grayscale(100%); transition: 0.5s; }
-        .plot:hover img { filter: grayscale(0%); }
+        /* --- Donation & Payment Section --- */
+        .donate-section { padding: 100px 5%; background: white; border-radius: 50px 50px 0 0; margin-top: -50px; }
+        .section-title { text-align: center; margin-bottom: 60px; }
+        .section-title h2 { font-family: 'Playfair Display', serif; font-size: 36px; margin-bottom: 10px; }
         
-        .plot-info {
-            position: absolute; bottom: 0; width: 100%; background: rgba(0,0,0,0.8);
-            color: #fff; padding: 10px 5px; font-size: 8px; text-align: center;
-            transform: translateY(100%); transition: 0.3s;
-        }
-        .plot:hover .plot-info { transform: translateY(0); }
+        .payment-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 30px; max-width: 1100px; margin: 0 auto; }
+        .payment-card { background: #f4f7f5; padding: 40px; border-radius: 24px; transition: 0.3s; border: 1px solid transparent; }
+        .payment-card:hover { border-color: var(--nature-green); background: white; box-shadow: 0 20px 40px rgba(0,0,0,0.05); }
+        .payment-card h3 { color: var(--nature-green); margin-bottom: 15px; font-size: 20px; }
+        .payment-card p { font-family: monospace; font-size: 15px; color: #333; background: #e0eadd; padding: 10px; border-radius: 8px; word-break: break-all; }
 
-        /* --- Acquisition Drawer & Buttons --- */
-        .btn-action { 
-            padding: 15px 50px; border: 1px solid var(--black); text-decoration: none; 
-            color: var(--black); font-size: 10px; letter-spacing: 4px; text-transform: uppercase; transition: 0.4s;
+        /* --- Donor Wall (The Grid) --- */
+        .donor-wall { padding: 100px 5%; background: var(--dark-oak); color: white; }
+        .donor-grid { 
+            display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); 
+            gap: 20px; max-width: 1200px; margin: 50px auto 0;
         }
-        .btn-action:hover { background: var(--black); color: var(--white); }
+        .donor-card { 
+            background: #222; border-radius: 15px; overflow: hidden; 
+            text-align: center; transition: 0.4s; position: relative;
+            text-decoration: none; color: white; display: block;
+        }
+        .donor-card:hover { transform: translateY(-10px); background: #2d2d2d; }
+        .donor-card img { width: 100%; aspect-ratio: 1/1; object-fit: cover; opacity: 0.8; transition: 0.3s; }
+        .donor-card:hover img { opacity: 1; }
+        
+        .donor-info { padding: 15px; }
+        .donor-info h4 { font-size: 14px; margin-bottom: 5px; color: var(--gold-leaf); }
+        .donor-info span { font-size: 11px; opacity: 0.7; text-transform: uppercase; letter-spacing: 1px; }
+        .tree-badge { 
+            position: absolute; top: 10px; right: 10px; background: var(--nature-green); 
+            color: white; font-size: 10px; padding: 5px 10px; border-radius: 20px; font-weight: bold; 
+        }
 
-        /* WhatsApp & Social Support */
-        .social-fixed { position: fixed; bottom: 30px; display: flex; gap: 15px; z-index: 3000; }
-        .s-btn { 
-            width: 45px; height: 45px; border: 1px solid #000; border-radius: 50%; 
-            display: flex; align-items: center; justify-content: center; background: #fff; text-decoration: none;
-        }
-        .left-s { left: 30px; }
-        .right-s { right: 30px; }
+        /* --- Footer --- */
+        footer { padding: 50px 5%; text-align: center; font-size: 12px; color: #888; letter-spacing: 1px; }
 
-        /* Responsive */
-        @media (max-width: 900px) {
-            .legacy-grid { grid-template-columns: repeat(4, 1fr); } /* Mobile-এ ৪টি কলাম */
-        }
-        @media (max-width: 600px) {
-            .legacy-grid { grid-template-columns: repeat(3, 1fr); }
-            .nav-bar { height: 120px; }
+        @media (max-width: 768px) {
+            .nav-links { display: none; }
+            .hero h1 { font-size: 36px; }
+            .donor-grid { grid-template-columns: repeat(3, 1fr); gap: 10px; }
         }
     </style>
 </head>
 <body>
 
-    <header class="nav-bar">
-        <div class="rr-logo">K</div>
-        <div class="brand-subtitle">ARK ARCHIVE OFFICIAL</div>
-    </header>
+    <nav>
+        <div class="logo">The July Legacy</div>
+        <div class="nav-links">
+            <a href="#mission">Mission</a>
+            <a href="#donate">Contribute</a>
+            <a href="#wall">Legacy Wall</a>
+            <a href="https://wa.me/8801576940717">Support</a>
+        </div>
+    </nav>
 
-    <section class="snap-section">
-        <h1 class="title">The July Legacy</h1>
-        <p class="quote">
-            "History is not just lived; it is preserved for eternity. This archive is a silent witness to the courage of July. By claiming a plot, you are securing a fragment of the revolution forever."
-        </p>
-        <a href="#plots" class="btn-action">View Archive Grid</a>
+    <section class="hero" id="mission">
+        <h1>1 Billion Trees.<br>One Eternal Legacy.</h1>
+        <p>আমরা জুলাইয়ের বিপ্লবকে অমর করে রাখতে চাই প্রকৃতির মাধ্যমে। প্রতিটি গাছ একটি প্রাণ, একটি ইতিহাস। আজই আপনার অংশটি রোপণ করুন।</p>
+        <a href="#donate" class="btn-primary">Plant a Tree Now</a>
     </section>
 
-    <section class="grid-container" id="plots">
-        <div class="grid-header">
-            <h2>The 36 Sovereign Plots</h2>
-            <p style="font-size: 10px; color: #888; letter-spacing: 2px; margin-top: 10px;">SECURED & VERIFIED MEMORIES</p>
+    <section class="donate-section" id="donate">
+        <div class="section-title">
+            <h2>Payment Gateways</h2>
+            <p>প্রতিটি গাছ মাত্র ১ ডলার বা ১২০ টাকা</p>
+        </div>
+        
+        <div class="payment-grid">
+            <div class="payment-card">
+                <h3>Binance Pay</h3>
+                <span style="font-size: 12px; color: #666;">UID (Copy below)</span>
+                <p onclick="copyText('912221034')">912221034</p>
+                <br>
+                <span style="font-size: 12px; color: #666;">USDT (TRC20)</span>
+                <p onclick="copyText('TTapBkTqrDnzHbWzek6wSBUTcJKFmR8Ws6')">TTapBkTqrDnzHbWzek6wSBUTcJKFmR8Ws6</p>
+            </div>
+
+            <div class="payment-card">
+                <h3>Local (bKash/Nagad)</h3>
+                <span style="font-size: 12px; color: #666;">Personal Number</span>
+                <p onclick="copyText('01576940717')">01576940717</p>
+                <p style="margin-top: 10px;" onclick="copyText('01756206213')">01756206213</p>
+            </div>
+        </div>
+        
+        <div style="text-align: center; margin-top: 50px;">
+            <p style="font-size: 14px; color: #666;">পেমেন্ট করার পর ট্রানজেকশন আইডি এবং আপনার ছবি হোয়াটসঅ্যাপে পাঠান।</p>
+            <a href="https://wa.me/8801576940717" style="color: var(--nature-green); font-weight: bold; text-decoration: none;">Send Receipt →</a>
+        </div>
+    </section>
+
+    <section class="donor-wall" id="wall">
+        <div class="section-title">
+            <h2 style="color: white;">Legacy Wall of Donors</h2>
+            <p style="color: #aaa;">যারা এই মহৎ উদ্দেশ্যে আমাদের সাথে আছেন</p>
         </div>
 
-        <div class="legacy-grid" id="legacyGrid">
+        <div class="donor-grid" id="donorGrid">
             </div>
     </section>
 
-    <section class="snap-section" style="background: #000; color: #fff;">
-        <span style="letter-spacing: 5px; font-size: 10px; color: var(--dark-gold);">ESTATE GOVERNANCE</span>
-        <h2 style="font-family: 'Cinzel'; letter-spacing: 5px; margin: 20px 0;">Acquisition Policy</h2>
-        <p style="max-width: 600px; font-size: 12px; opacity: 0.7; line-height: 2;">
-            One-time lifetime acquisition. $36 per plot. Secure your identity in the archive with 4K media and social verification.
-        </p>
-        <br><br>
-        <a href="https://wa.me/8801576940717" class="btn-action" style="border-color: #fff; color: #fff;">Contact Concierge</a>
-    </section>
-
-    <div class="social-fixed left-s">
-        <a href="https://wa.me/8801576940717" class="s-btn">
-            <svg width="20" viewBox="0 0 24 24"><path d="M12.004 2C6.48 2 2 6.48 2 12C2 13.59 2.37 15.12 3.08 16.46L2 22L7.69 20.91C8.99 21.61 10.45 22 12.004 22C17.524 22 22.004 17.52 22.004 12C22.004 6.48 17.524 2 12.004 2Z"/></svg>
-        </a>
-    </div>
-
-    <div class="social-fixed right-s">
-        <a href="https://x.com/ARCHIVEKAWSAR" class="s-btn">
-            <svg width="18" viewBox="0 0 24 24"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
-        </a>
-    </div>
+    <footer>
+        © 2026 THE JULY LEGACY | MANAGED BY ARK ARCHIVE OFFICIAL
+    </footer>
 
     <script>
         // --- Firebase Config ---
@@ -160,38 +161,51 @@
         firebase.initializeApp(firebaseConfig);
         const db = firebase.database();
 
-        // --- Generate 36 Plots ---
-        const grid = document.getElementById('legacyGrid');
-        
+        // --- Load Donors Logic ---
+        const donorGrid = document.getElementById('donorGrid');
+
+        // Initial Empty Plots (Placements)
         for (let i = 1; i <= 36; i++) {
-            const plot = document.createElement('div');
-            plot.className = 'plot';
-            plot.id = `plot-${i}`;
-            plot.innerHTML = `
-                <img src="https://via.placeholder.com/200?text=Plot+${i}" id="img-${i}">
-                <div class="plot-info">
-                    <b id="name-${i}">VACANT ESTATE</b><br>
-                    <span id="desc-${i}">ID: JULY-2026-${i}</span>
+            const emptyCard = document.createElement('div');
+            emptyCard.className = 'donor-card';
+            emptyCard.id = `donor-${i}`;
+            emptyCard.innerHTML = `
+                <img src="https://via.placeholder.com/300/1a1a1a/666?text=Claim+Plot" alt="Vacant">
+                <div class="donor-info">
+                    <h4>Vacant Slot</h4>
+                    <span>Join the Mission</span>
                 </div>
             `;
-            grid.appendChild(plot);
+            donorGrid.appendChild(emptyCard);
         }
 
-        // --- Fetch Data From Firebase (Real-time Sync) ---
-        db.ref('verified_plots').on('value', (snapshot) => {
+        // Fetch Real Data from Firebase
+        db.ref('tree_donors').on('value', (snapshot) => {
             const data = snapshot.val();
             if (data) {
                 Object.keys(data).forEach(key => {
-                    const plotNum = data[key].plotNumber; // ১ থেকে ৩৬ এর মধ্যে
-                    if(plotNum <= 36) {
-                        document.getElementById(`img-${plotNum}`).src = data[key].photoUrl;
-                        document.getElementById(`name-${plotNum}`).innerText = data[key].name;
-                        document.getElementById(`desc-${plotNum}`).innerText = "SECURED LEGACY";
+                    const donor = data[key];
+                    const slot = document.getElementById(`donor-${donor.slotNumber}`);
+                    if (slot) {
+                        slot.href = donor.profileLink; // Facebook/Instagram Link
+                        slot.target = "_blank";
+                        slot.innerHTML = `
+                            <div class="tree-badge">${donor.treeCount} Trees</div>
+                            <img src="${donor.photoUrl}" alt="${donor.name}">
+                            <div class="donor-info">
+                                <h4>${donor.name}</h4>
+                                <span>Verified Donor</span>
+                            </div>
+                        `;
                     }
                 });
             }
         });
 
+        function copyText(text) {
+            navigator.clipboard.writeText(text);
+            alert("Copied: " + text);
+        }
     </script>
 </body>
 </html>
