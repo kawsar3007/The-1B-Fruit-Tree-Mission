@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>The July Legacy | Ark Archive Official</title>
+    <title>THE JULY LEGACY | ARK ARCHIVE OFFICIAL</title>
     
     <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&family=Montserrat:wght@300;400;600&display=swap" rel="stylesheet">
     
@@ -11,275 +11,142 @@
     <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-database-compat.js"></script>
 
     <style>
-        :root {
-            --gold: #C5A059;
-            --black: #050505;
-            --white: #F5F5F5;
-            --dark-gray: #121212;
+        :root { 
+            --black: #000000; 
+            --white: #ffffff; 
+            --gold: #FCD535;
+            --dark-gold: #C5A059;
+            --grey: #888888;
         }
 
-        * { box-sizing: border-box; transition: all 0.3s ease; }
-
-        body {
-            margin: 0;
-            background-color: var(--black);
-            color: var(--white);
-            font-family: 'Montserrat', sans-serif;
-            overflow-x: hidden;
+        html { scroll-snap-type: y mandatory; scroll-behavior: smooth; }
+        body { 
+            margin: 0; padding: 0; background: var(--white); color: var(--black); 
+            font-family: 'Montserrat', sans-serif; overflow-x: hidden;
         }
 
-        /* Hero Section Styling */
-        .hero {
-            height: 80vh;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            text-align: center;
-            background: linear-gradient(rgba(0,0,0,0.8), rgba(0,0,0,0.8)), 
-                        url('https://images.unsplash.com/photo-1464306208223-e0b4495a5553?q=80&w=2070');
-            background-size: cover;
-            border-bottom: 2px solid var(--gold);
-            padding: 20px;
+        /* --- Luxury Navigation --- */
+        .nav-bar {
+            position: fixed; top: 0; width: 100%; height: 160px;
+            display: flex; flex-direction: column; align-items: center; justify-content: center;
+            z-index: 2000; background: rgba(255,255,255,0.95); backdrop-filter: blur(10px);
+            border-bottom: 1px solid #eee;
         }
+        .rr-logo { font-family: 'Cinzel', serif; font-size: 40px; font-weight: 900; letter-spacing: 5px; color: var(--black); }
+        .brand-subtitle { font-size: 10px; letter-spacing: 10px; text-transform: uppercase; margin-top: 10px; color: var(--dark-gold); }
 
-        .hero h1 {
-            font-family: 'Cinzel', serif;
-            font-size: clamp(2rem, 8vw, 4rem);
-            color: var(--gold);
-            margin: 0;
-            letter-spacing: 8px;
+        /* --- Hero Section --- */
+        .snap-section { 
+            height: 100vh; width: 100%; scroll-snap-align: start; 
+            display: flex; flex-direction: column; justify-content: center; 
+            align-items: center; text-align: center; padding: 0 10%; box-sizing: border-box; 
         }
+        .title { font-family: 'Cinzel', serif; font-size: clamp(24px, 6vw, 50px); letter-spacing: 15px; text-transform: uppercase; margin-bottom: 20px; }
+        .quote { max-width: 700px; font-style: italic; font-size: 14px; color: var(--grey); line-height: 1.8; margin-bottom: 30px; }
 
-        .archive-tag {
-            font-size: 1rem;
-            letter-spacing: 4px;
-            color: var(--white);
-            margin-top: 10px;
-            font-weight: 300;
+        /* --- The 36 Legacy Plots (Grid System) --- */
+        .grid-container { 
+            padding: 150px 5% 100px; background: #fafafa; 
+            scroll-snap-align: start; min-height: 100vh;
         }
+        .grid-header { text-align: center; margin-bottom: 60px; }
+        .grid-header h2 { font-family: 'Cinzel', serif; letter-spacing: 8px; font-size: 24px; }
 
-        .hero p {
-            max-width: 800px;
-            margin-top: 30px;
-            line-height: 1.8;
-            color: #bbb;
-            font-style: italic;
+        .legacy-grid { 
+            display: grid; 
+            grid-template-columns: repeat(6, 1fr); /* 6x6 Grid for 36 Plots */
+            gap: 15px; max-width: 1200px; margin: 0 auto; 
         }
-
-        /* Information Portals (The Grid Design) */
-        .portal-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 20px;
-            padding: 40px;
-            max-width: 1200px;
-            margin: -50px auto 50px;
+        .plot { 
+            aspect-ratio: 1/1; background: #fff; border: 1px solid #ddd; 
+            position: relative; overflow: hidden; transition: 0.4s; cursor: pointer;
         }
-
-        .portal-item {
-            background: var(--dark-gray);
-            border: 1px solid #222;
-            padding: 30px;
-            border-radius: 4px;
-            cursor: pointer;
-            position: relative;
-            overflow: hidden;
+        .plot:hover { border-color: var(--dark-gold); transform: scale(1.05); z-index: 10; box-shadow: 0 20px 40px rgba(0,0,0,0.1); }
+        .plot img { width: 100%; height: 100%; object-fit: cover; filter: grayscale(100%); transition: 0.5s; }
+        .plot:hover img { filter: grayscale(0%); }
+        
+        .plot-info {
+            position: absolute; bottom: 0; width: 100%; background: rgba(0,0,0,0.8);
+            color: #fff; padding: 10px 5px; font-size: 8px; text-align: center;
+            transform: translateY(100%); transition: 0.3s;
         }
+        .plot:hover .plot-info { transform: translateY(0); }
 
-        .portal-item:hover {
-            border-color: var(--gold);
-            transform: translateY(-5px);
-            background: #1a1a1a;
+        /* --- Acquisition Drawer & Buttons --- */
+        .btn-action { 
+            padding: 15px 50px; border: 1px solid var(--black); text-decoration: none; 
+            color: var(--black); font-size: 10px; letter-spacing: 4px; text-transform: uppercase; transition: 0.4s;
         }
+        .btn-action:hover { background: var(--black); color: var(--white); }
 
-        .portal-item h3 {
-            color: var(--gold);
-            font-family: 'Cinzel', serif;
-            margin-top: 0;
-            font-size: 1.1rem;
+        /* WhatsApp & Social Support */
+        .social-fixed { position: fixed; bottom: 30px; display: flex; gap: 15px; z-index: 3000; }
+        .s-btn { 
+            width: 45px; height: 45px; border: 1px solid #000; border-radius: 50%; 
+            display: flex; align-items: center; justify-content: center; background: #fff; text-decoration: none;
         }
+        .left-s { left: 30px; }
+        .right-s { right: 30px; }
 
-        .portal-item p {
-            font-size: 0.9rem;
-            color: #999;
-            line-height: 1.6;
+        /* Responsive */
+        @media (max-width: 900px) {
+            .legacy-grid { grid-template-columns: repeat(4, 1fr); } /* Mobile-এ ৪টি কলাম */
         }
-
-        /* Donation & Gateway Section */
-        .main-container {
-            max-width: 900px;
-            margin: 0 auto 100px;
-            padding: 20px;
-        }
-
-        .donation-card {
-            background: #0a0a0a;
-            padding: 50px;
-            border: 1px solid var(--gold);
-            box-shadow: 0 0 50px rgba(197, 160, 89, 0.1);
-        }
-
-        .input-group { margin-bottom: 30px; }
-
-        input {
-            width: 100%;
-            background: transparent;
-            border: none;
-            border-bottom: 1px solid #333;
-            color: var(--white);
-            padding: 15px 0;
-            font-size: 1.1rem;
-            outline: none;
-        }
-
-        input:focus { border-bottom: 1px solid var(--gold); }
-
-        .gateway-tabs {
-            display: flex;
-            gap: 20px;
-            margin: 30px 0;
-            border-bottom: 1px solid #222;
-        }
-
-        .tab-btn {
-            background: none;
-            border: none;
-            color: #555;
-            padding: 15px;
-            cursor: pointer;
-            font-weight: 600;
-            text-transform: uppercase;
-        }
-
-        .tab-btn.active { color: var(--gold); border-bottom: 2px solid var(--gold); }
-
-        .portal-display {
-            display: none;
-            padding: 20px;
-            background: #111;
-            margin-bottom: 30px;
-            border-left: 3px solid var(--gold);
-        }
-
-        .portal-display.active { display: block; }
-
-        .confirm-btn {
-            width: 100%;
-            background: var(--gold);
-            color: black;
-            border: none;
-            padding: 20px;
-            font-weight: 700;
-            text-transform: uppercase;
-            letter-spacing: 2px;
-            cursor: pointer;
-        }
-
-        .confirm-btn:hover { background: #e2b764; }
-
-        /* Floating WhatsApp */
-        .whatsapp-float {
-            position: fixed;
-            bottom: 30px;
-            right: 30px;
-            background: #25D366;
-            color: white;
-            padding: 15px 25px;
-            border-radius: 50px;
-            text-decoration: none;
-            font-weight: bold;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
-            z-index: 1000;
-        }
-
-        @media (max-width: 768px) {
-            .portal-grid { padding: 20px; }
-            .donation-card { padding: 30px 20px; }
+        @media (max-width: 600px) {
+            .legacy-grid { grid-template-columns: repeat(3, 1fr); }
+            .nav-bar { height: 120px; }
         }
     </style>
 </head>
 <body>
 
-    <a href="https://wa.me/8801576940717" class="whatsapp-float">WhatsApp Support</a>
-
-    <header class="hero">
-        <div class="archive-tag">ARK ARCHIVE OFFICIAL</div>
-        <h1>THE JULY LEGACY</h1>
-        <p>"History is not just lived; it is preserved for eternity. This archive is a silent witness to the courage of July. By claiming a plot, you are securing a fragment of the revolution forever."</p>
+    <header class="nav-bar">
+        <div class="rr-logo">K</div>
+        <div class="brand-subtitle">ARK ARCHIVE OFFICIAL</div>
     </header>
 
-    <div class="portal-grid">
-        <div class="portal-item">
-            <h3>Why claim a plot?</h3>
-            <p>Every plot represents a fruit tree for a student. You are not just donating; you are building a green legacy for the next generation.</p>
+    <section class="snap-section">
+        <h1 class="title">The July Legacy</h1>
+        <p class="quote">
+            "History is not just lived; it is preserved for eternity. This archive is a silent witness to the courage of July. By claiming a plot, you are securing a fragment of the revolution forever."
+        </p>
+        <a href="#plots" class="btn-action">View Archive Grid</a>
+    </section>
+
+    <section class="grid-container" id="plots">
+        <div class="grid-header">
+            <h2>The 36 Sovereign Plots</h2>
+            <p style="font-size: 10px; color: #888; letter-spacing: 2px; margin-top: 10px;">SECURED & VERIFIED MEMORIES</p>
         </div>
-        <div class="portal-item">
-            <h3>Is it a one-time payment?</h3>
-            <p>Yes. A single $1 donation secures one tree and its lifelong preservation in our digital archive under your name.</p>
-        </div>
-        <div class="portal-item">
-            <h3>Is this data secure?</h3>
-            <p>Our archive uses encrypted Firebase technology to ensure your donor profile and contribution history remain eternal.</p>
-        </div>
-        <div class="portal-item">
-            <h3>Environmental Impact</h3>
-            <p>1 Billion trees will balance the ecosystem, reduce carbon emissions, and provide free nutrition to children across Bangladesh.</p>
-        </div>
-        <div class="portal-item">
-            <h3>Social Connectivity</h3>
-            <p>Verified donors can add their social links and photos, connecting with other revolution-minders globally.</p>
-        </div>
-        <div class="portal-item">
-            <h3>Who owns this archive?</h3>
-            <p>The community. We are the silent witnesses, ensuring that the spirit of July and nature's balance are never forgotten.</p>
-        </div>
+
+        <div class="legacy-grid" id="legacyGrid">
+            </div>
+    </section>
+
+    <section class="snap-section" style="background: #000; color: #fff;">
+        <span style="letter-spacing: 5px; font-size: 10px; color: var(--dark-gold);">ESTATE GOVERNANCE</span>
+        <h2 style="font-family: 'Cinzel'; letter-spacing: 5px; margin: 20px 0;">Acquisition Policy</h2>
+        <p style="max-width: 600px; font-size: 12px; opacity: 0.7; line-height: 2;">
+            One-time lifetime acquisition. $36 per plot. Secure your identity in the archive with 4K media and social verification.
+        </p>
+        <br><br>
+        <a href="https://wa.me/8801576940717" class="btn-action" style="border-color: #fff; color: #fff;">Contact Concierge</a>
+    </section>
+
+    <div class="social-fixed left-s">
+        <a href="https://wa.me/8801576940717" class="s-btn">
+            <svg width="20" viewBox="0 0 24 24"><path d="M12.004 2C6.48 2 2 6.48 2 12C2 13.59 2.37 15.12 3.08 16.46L2 22L7.69 20.91C8.99 21.61 10.45 22 12.004 22C17.524 22 22.004 17.52 22.004 12C22.004 6.48 17.524 2 12.004 2Z"/></svg>
+        </a>
     </div>
 
-    <div class="main-container">
-        <div class="donation-card">
-            <h2 style="font-family: 'Cinzel', serif; color: var(--gold); text-align: center; margin-bottom: 40px;">SECURE YOUR FRAGMENT</h2>
-            
-            <div class="input-group">
-                <input type="text" id="donorName" placeholder="Full Name" required>
-            </div>
-
-            <div class="input-group">
-                <input type="number" id="treeCount" placeholder="Number of Trees (Max 50)" max="50" min="1" required>
-                <div style="margin-top: 10px; font-size: 0.9rem;">Total Impact: <span id="usdVal" style="color: var(--gold);">$0</span></div>
-            </div>
-
-            <div class="gateway-tabs">
-                <button class="tab-btn active" onclick="switchTab('binance', this)">Binance</button>
-                <button class="tab-btn" onclick="switchTab('bkash', this)">bKash</button>
-                <button class="tab-btn" onclick="switchTab('bank', this)">Bank</button>
-            </div>
-
-            <div id="binance" class="portal-display active">
-                <strong>UID:</strong> 912221034 <br>
-                <strong>TRC20:</strong> <small>TTapBkTqrDnzHbWzek6wSBUTcJKFmR8Ws6</small>
-            </div>
-
-            <div id="bkash" class="portal-display">
-                <strong>Numbers (Remitly/Taptap):</strong><br>
-                01756206213, 01576940717
-            </div>
-
-            <div id="bank" class="portal-display">
-                <strong>International Wire:</strong><br>
-                Recipient: [Pending] | SWIFT: [Pending]
-            </div>
-
-            <div class="input-group">
-                <input type="text" id="txnId" placeholder="Transaction ID / Receipt Reference" required>
-            </div>
-
-            <button class="confirm-btn" onclick="submitDonation()">Finalize & Verify</button>
-        </div>
+    <div class="social-fixed right-s">
+        <a href="https://x.com/ARCHIVEKAWSAR" class="s-btn">
+            <svg width="18" viewBox="0 0 24 24"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
+        </a>
     </div>
 
     <script>
-        // Your Firebase Configuration
+        // --- Firebase Config ---
         const firebaseConfig = {
             apiKey: "AIzaSyCAdnfu2R82xbC7H85n_9mvQBE58X3TjbA",
             authDomain: "the-5k-elite-legacy.firebaseapp.com",
@@ -293,37 +160,38 @@
         firebase.initializeApp(firebaseConfig);
         const db = firebase.database();
 
-        function switchTab(id, btn) {
-            document.querySelectorAll('.portal-display').forEach(p => p.classList.remove('active'));
-            document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
-            document.getElementById(id).classList.add('active');
-            btn.classList.add('active');
+        // --- Generate 36 Plots ---
+        const grid = document.getElementById('legacyGrid');
+        
+        for (let i = 1; i <= 36; i++) {
+            const plot = document.createElement('div');
+            plot.className = 'plot';
+            plot.id = `plot-${i}`;
+            plot.innerHTML = `
+                <img src="https://via.placeholder.com/200?text=Plot+${i}" id="img-${i}">
+                <div class="plot-info">
+                    <b id="name-${i}">VACANT ESTATE</b><br>
+                    <span id="desc-${i}">ID: JULY-2026-${i}</span>
+                </div>
+            `;
+            grid.appendChild(plot);
         }
 
-        document.getElementById('treeCount').addEventListener('input', (e) => {
-            document.getElementById('usdVal').innerText = "$" + (e.target.value || 0);
+        // --- Fetch Data From Firebase (Real-time Sync) ---
+        db.ref('verified_plots').on('value', (snapshot) => {
+            const data = snapshot.val();
+            if (data) {
+                Object.keys(data).forEach(key => {
+                    const plotNum = data[key].plotNumber; // ১ থেকে ৩৬ এর মধ্যে
+                    if(plotNum <= 36) {
+                        document.getElementById(`img-${plotNum}`).src = data[key].photoUrl;
+                        document.getElementById(`name-${plotNum}`).innerText = data[key].name;
+                        document.getElementById(`desc-${plotNum}`).innerText = "SECURED LEGACY";
+                    }
+                });
+            }
         });
 
-        function submitDonation() {
-            const name = document.getElementById('donorName').value;
-            const trees = document.getElementById('treeCount').value;
-            const txn = document.getElementById('txnId').value;
-
-            if(!name || !trees || !txn) {
-                alert("Please fill in all details to preserve your fragment.");
-                return;
-            }
-
-            db.ref('donations/' + txn).set({
-                donorName: name,
-                treeCount: trees,
-                status: "pending",
-                timestamp: Date.now()
-            }).then(() => {
-                alert("Thank you. Your contribution to The July Legacy has been recorded for verification.");
-                location.reload();
-            });
-        }
     </script>
 </body>
 </html>
