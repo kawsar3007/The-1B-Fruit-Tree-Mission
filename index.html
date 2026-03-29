@@ -1,263 +1,309 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ARK | GLOBAL ETERNAL LEGACY</title>
-    
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-app-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-database-compat.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ARK ARCHIVE | Global Eternal Legacy</title>
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700;900&family=Inter:wght@300;400;600&display=swap');
 
-    <style>
-        @import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&family=Inter:wght@100;300;400;600&display=swap');
+        :root {
+            --cyan: #00BFFF; /* MrBeast Blue */
+            --pink: #FF1493; /* MrBeast Pink */
+            --black: #000000;
+            --white: #ffffff;
+            --grey: #f4f4f4;
+        }
 
-        :root {
-            --ark-primary: #1E5128;
-            --ark-black: #050505;
-            --ark-border: rgba(255, 255, 255, 0.1);
-        }
+        * { margin: 0; padding: 0; box-sizing: border-box; scroll-behavior: smooth; }
+        body { 
+            background: var(--white); color: var(--black); 
+            font-family: 'Inter', sans-serif; overflow-x: hidden;
+        }
 
-        * { margin: 0; padding: 0; box-sizing: border-box; cursor: crosshair; }
-        body { background: var(--ark-black); color: #fff; font-family: 'Inter', sans-serif; overflow-x: hidden; }
+        /* Perfectly Centered Main Wrapper */
+        .main-wrapper {
+            display: flex; flex-direction: column; align-items: center; width: 100%;
+        }
 
-        /* Background from previous version */
-        .hero-bg {
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: linear-gradient(rgba(0,0,0,0.8), rgba(0,0,0,0.95)), 
-                        url('https://images.unsplash.com/photo-1511497584788-876760111969?auto=format&fit=crop&q=80&w=2000');
-            background-size: cover; background-position: center; z-index: -1;
-            filter: contrast(1.1);
-        }
+        /* Header / Nav */
+        .nav-bar {
+            width: 100%; max-width: 1200px; height: 100px;
+            display: flex; align-items: center; justify-content: space-between;
+            padding: 0 20px; background: var(--white);
+        }
+        
+        /* Custom ARK Logo like MrBeast */
+        .logo-area { display: flex; align-items: center; gap: 10px; }
+        .logo-icon { width: 50px; height: 50px; background: var(--cyan); border-radius: 10px; display: flex; align-items: center; justify-content: center; font-family: 'Montserrat'; font-weight: 900; color: #fff; font-size: 24px; }
+        .logo-text { font-family: 'Montserrat'; font-weight: 900; font-size: 22px; line-height: 1; }
+        .logo-text span { color: var(--pink); display: block; font-size: 14px; font-weight: 700; }
 
-        /* Language Switcher */
-        .lang-control { position: fixed; top: 25px; left: 5%; z-index: 7000; }
-        .lang-btn { background: transparent; border: 1px solid var(--ark-primary); color: #fff; padding: 8px 15px; cursor: pointer; font-size: 10px; letter-spacing: 2px; }
+        .nav-links { display: flex; gap: 25px; align-items: center; }
+        .nav-link { text-decoration: none; color: var(--black); font-weight: 700; font-size: 13px; text-transform: uppercase; font-family: 'Montserrat'; }
+        .donate-btn { background: var(--pink); color: #fff; padding: 12px 30px; border-radius: 50px; text-decoration: none; font-weight: 900; font-size: 13px; text-transform: uppercase; font-family: 'Montserrat'; transition: 0.3s; }
+        .donate-btn:hover { background: var(--black); }
 
-        /* Navigation Logo */
-        header { padding: 40px; text-align: center; }
-        .logo-text { font-family: 'Cinzel'; letter-spacing: 12px; color: var(--ark-primary); font-size: 28px; }
+        /* Universal Section Styling - Centered Content */
+        .section {
+            width: 100%; display: flex; flex-direction: column; align-items: center;
+            padding: 80px 20px; text-align: center;
+        }
 
-        /* Floating Registration Button */
-        .fixed-reg-btn {
-            position: fixed; bottom: 30px; right: 30px; z-index: 5000;
-            background: var(--ark-primary); color: #fff; border: none;
-            padding: 15px 30px; border-radius: 5px; font-weight: bold;
-            letter-spacing: 2px; text-transform: uppercase; font-size: 12px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.5); cursor: pointer;
-        }
+        /* Section 1: Hero (MrBeast Style Blue Banner) */
+        #hero {
+            background: var(--cyan); color: #fff; padding: 100px 20px;
+            scroll-snap-align: start;
+        }
+        .hero-title { font-family: 'Montserrat'; font-weight: 900; font-size: clamp(30px, 6vw, 60px); text-transform: uppercase; margin-bottom: 20px; line-height: 1.1; }
+        .hero-desc { max-width: 800px; font-size: 18px; line-height: 1.6; color: rgba(255,255,255,0.9); margin-bottom: 40px; }
 
-        /* Drawer System */
-        #portal-drawer {
-            position: fixed; top: 0; right: -100%; width: min(450px, 100%); height: 100vh;
-            background: #000; border-left: 1px solid var(--ark-primary); z-index: 6000;
-            padding: 80px 40px; transition: 0.6s cubic-bezier(0.19, 1, 0.22, 1); overflow-y: auto;
-        }
-        #portal-drawer.open { right: 0; }
+        /* Section 2: Detailed Info / FAQ (Transparency) */
+        #philosophy { background: var(--grey); scroll-snap-align: start;}
+        .section-title { font-family: 'Montserrat'; font-weight: 900; font-size: 36px; text-transform: uppercase; margin-bottom: 50px; color: var(--cyan); }
+        .info-grid {
+            display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px; max-width: 1100px; width: 100%; text-align: left;
+        }
+        .info-card { background: #fff; padding: 30px; border-radius: 10px; border: 1px solid #eee; }
+        .info-card h3 { font-family: 'Montserrat'; font-weight: 900; color: var(--black); font-size: 18px; margin-bottom: 15px; text-transform: uppercase; }
+        .info-card p { font-size: 14px; color: #555; line-height: 1.6; }
 
-        /* Payment Address */
-        .pay-addr { 
-            background: #111; padding: 15px; border: 1px solid #222; margin-bottom: 10px; 
-            font-family: monospace; font-size: 12px; color: #aaa; cursor: pointer;
-        }
+        /* Section 3: 8 Image Gallery */
+        #gallery { scroll-snap-align: start; }
+        .gallery-grid {
+            display: grid; grid-template-columns: repeat(4, 1fr); gap: 15px;
+            width: 100%; max-width: 1100px; margin-top: 30px;
+        }
+        @media (max-width: 768px) { .gallery-grid { grid-template-columns: repeat(2, 1fr); } }
+        .gallery-item { width: 100%; height: 200px; background: #eee; border-radius: 10px; overflow: hidden; border: 1px solid #ddd; }
+        .gallery-item img { width: 100%; height: 100%; object-fit: cover; transition: 0.5s; }
+        .gallery-item:hover img { transform: scale(1.05); }
 
-        /* Plot Grid (Circle Style) */
-        .archive-container { padding: 60px 5%; text-align: center; }
-        .plot-grid { 
-            display: grid; grid-template-columns: repeat(auto-fill, minmax(130px, 1fr)); 
-            gap: 40px; margin-top: 50px;
-        }
-        .plot-item { margin-bottom: 20px; transition: 0.4s; }
-        .plot-circle {
-            width: 100px; height: 100px; border-radius: 50%; border: 1px solid #222;
-            margin: 0 auto 15px; overflow: hidden; position: relative; background: rgba(255,255,255,0.02);
-            transition: 0.5s; cursor: pointer;
-        }
-        .plot-circle:hover { border-color: var(--ark-primary); transform: scale(1.1); box-shadow: 0 0 20px rgba(30,81,40,0.3); }
-        .plot-circle img { width: 100%; height: 100%; object-fit: cover; opacity: 0.7; }
-        .plot-name { font-size: 11px; text-transform: uppercase; letter-spacing: 1px; color: #fff; margin-bottom: 4px; }
-        .plot-trees { font-size: 9px; color: var(--ark-primary); font-weight: bold; }
+        /* Section 4: Donor Grid (Full Width, 8 per row) */
+        #archive { background: var(--black); color: #fff; padding: 100px 0; scroll-snap-align: start;}
+        .archive-title { font-family: 'Montserrat'; font-weight: 900; font-size: 36px; text-transform: uppercase; margin-bottom: 50px; color: var(--cyan); }
+        
+        .donor-grid-wrapper {
+            width: 100vw; position: relative; left: 50%; right: 50%; margin-left: -50vw; margin-right: -50vw;
+            overflow-x: hidden;
+        }
+        .donor-grid { 
+            display: grid; grid-template-columns: repeat(8, 1fr); 
+            gap: 15px; padding: 0 20px; width: 100%;
+        }
+        @media (max-width: 1024px) { .donor-grid { grid-template-columns: repeat(6, 1fr); } }
+        @media (max-width: 768px) { .donor-grid { grid-template-columns: repeat(4, 1fr); } }
+        @media (max-width: 480px) { .donor-grid { grid-template-columns: repeat(3, 1fr); } }
 
-        /* Social Icons */
-        .social-dock { margin-top: 40px; display: flex; justify-content: center; gap: 20px; }
-        .social-icon { color: #fff; font-size: 20px; transition: 0.3s; }
-        .social-icon:hover { color: var(--ark-primary); transform: translateY(-3px); }
+        .donor-item { text-align: center; color: inherit; text-decoration: none; }
+        .donor-circle {
+            width: clamp(60px, 8vw, 100px); height: clamp(60px, 8vw, 100px); border-radius: 50%; border: 2px solid var(--cyan);
+            display: flex; align-items: center; justify-content: center; overflow: hidden; margin: 0 auto;
+            background: rgba(255,255,255,0.05); transition: 0.3s;
+        }
+        .donor-circle:hover { border-color: var(--pink); transform: scale(1.1); }
+        .donor-circle img { width: 100%; height: 100%; object-fit: cover; }
+        .donor-name { font-size: 10px; margin-top: 8px; display: block; color: var(--gold); }
 
-        /* Search Bar */
-        .search-area { max-width: 600px; margin: 40px auto; display: flex; border: 1px solid var(--ark-primary); background: rgba(0,0,0,0.5); }
-        .search-area input { flex: 1; background: transparent; border: none; color: #fff; padding: 15px; outline: none; }
-        .search-area button { background: var(--ark-primary); color: #fff; border: none; padding: 0 25px; cursor: pointer; text-transform: uppercase; font-size: 11px; }
+        /* Payment Drawer */
+        #payment-drawer {
+            position: fixed; top: 0; right: -100%; width: 450px; height: 100vh;
+            background: #fff; border-left: 5px solid var(--cyan); z-index: 4000;
+            padding: 80px 40px; transition: 0.6s cubic-bezier(0.19, 1, 0.22, 1); overflow-y: auto; color: #000;
+        }
+        #payment-drawer.open { right: 0; }
+        .drawer-title { font-family: 'Montserrat'; font-weight: 900; color: var(--cyan); font-size: 24px; margin-bottom: 30px; text-transform: uppercase; }
+        
+        .pay-input { width: 100%; padding: 15px; background: #f9f9f9; border: 1px solid #eee; color: #000; margin-bottom: 15px; outline: none; border-radius: 5px; }
+        .pay-card { background: var(--grey); padding: 15px; margin-bottom: 15px; border-radius: 5px; cursor: pointer; border: 1px solid #eee; }
+        .pay-card:hover { border-color: var(--cyan); }
+        .pay-card h4 { font-size: 14px; color: var(--black); }
+        .pay-card p { font-size: 11px; color: #777; margin-top: 5px; word-break: break-all; }
 
-        .ark-input { width: 100%; padding: 15px 0; background: transparent; border: none; border-bottom: 1px solid #333; color: #fff; margin-bottom: 25px; outline: none; }
-        
-        /* Certificate Template (Hidden) */
-        #certificate-template {
-            position: absolute; left: -9999px; width: 800px; height: 500px;
-            background: #fff; color: #000; font-family: 'Cinzel', serif;
-            border: 20px solid #1E5128; text-align: center; padding: 40px;
-        }
-    </style>
+        /* Footer (MrBeast Style Social Icons) */
+        .footer {
+            width: 100%; background: var(--grey); padding: 60px 20px;
+            display: flex; flex-direction: column; align-items: center; gap: 30px;
+            border-top: 1px solid #eee; scroll-snap-align: end;
+        }
+        .social-dock { display: flex; gap: 15px; }
+        .social-icon { width: 50px; height: 50px; border-radius: 50%; background: var(--pink); display: flex; align-items: center; justify-content: center; color: #fff; text-decoration: none; font-size: 20px; transition: 0.3s; }
+        .social-icon:hover { background: var(--black); transform: scale(1.1); }
+        
+        .copyright { font-size: 12px; color: #777; text-align: center; }
+        .copyright b { color: var(--black); }
+    </style>
 </head>
 <body>
 
-    <div class="hero-bg"></div>
+    <div id="cursor-outline"></div>
 
-    <div class="lang-control">
-        <button class="lang-btn" onclick="switchLanguage()" id="langLabel">ENGLISH</button>
-    </div>
+    <div class="main-wrapper">
+        <header class="nav-bar">
+            <div class="logo-area">
+                <div class="logo-icon">A</div>
+                <div class="logo-text">ARK ARCHIVE<span>Global Eternal Legacy</span></div>
+            </div>
+            <div class="nav-links">
+                <a href="#hero" class="nav-link">Home</a>
+                <a href="#philosophy" class="nav-link">Our Work</a>
+                <a href="#hero" onclick="toggleDrawer()" class="donate-btn">Donate</a>
+            </div>
+        </header>
 
-    <button class="fixed-reg-btn" onclick="toggleDrawer()" id="btn-submit-text">Submit Request</button>
+        <section class="section" id="hero">
+            <h1 class="hero-title">ONE BILLION FRUIT TREES MISSION</h1>
+            <p class="hero-desc">Our mission is absolute: providing every student in Bangladesh with a fruit tree. 100% of your contribution is used strictly for purchasing trees. Your donation plants hope, not overheads.</p>
+            <a href="javascript:void(0)" onclick="toggleDrawer()" class="donate-btn" style="font-size: 16px; padding: 15px 40px;">Contribute $1 per Tree</a>
+        </section>
 
-    <header>
-        <div class="logo-text">ARK ARCHIVE</div>
-        <p id="tagline-text" style="font-size: 10px; letter-spacing: 5px; color: #666; margin-top: 10px;">ONE CHILD • ONE TREE • ONE LEGACY</p>
-    </header>
+        <section class="section" id="philosophy">
+            <h2 class="section-title">TRANSPARENCY & IMPACT</h2>
+            <div class="info-grid">
+                <div class="info-card">
+                    <h3>Why Fruit Trees?</h3>
+                    <p>Traditional reforestation often ignores immediate human needs. By planting fruit trees, we provide children with a sustainable source of nutrition while restoring the ecosystem.</p>
+                </div>
+                <div class="info-card">
+                    <h3>Where Does My Money Actually Go?</h3>
+                    <p>Every dollar you send is converted directly into a sapling. Our team covers all personal expenses, transportation, and labor costs out of pocket.</p>
+                </div>
+                <div class="info-card">
+                    <h3>Global Scalability</h3>
+                    <p>Starting in climate-vulnerable Bangladesh, we aim for 1 Billion trees. Once achieved, we will expand Globally to restore balance.</p>
+                </div>
+                <div class="info-card">
+                    <h3>The Silent Witness</h3>
+                    <p>Every tree is recorded in the ARK ARCHIVE. Claiming a plot etches your name into the digital record of this green revolution.</p>
+                </div>
+            </div>
+        </section>
 
-    <section class="archive-container">
-        <h2 style="font-family: 'Cinzel'; letter-spacing: 5px;" id="search-title">SEARCH YOUR LEGACY</h2>
-        <div class="search-area">
-            <input type="text" id="searchInput" placeholder="Registered Name...">
-            <button onclick="downloadLegacyCard()" id="btn-download">Download</button>
-        </div>
+        <section class="section" id="gallery">
+            <h2 class="section-title">MISSION IN PROGRESS</h2>
+            <div class="gallery-grid">
+                <div class="gallery-item"><img src="https://via.placeholder.com/400?text=Update+1"></div>
+                <div class="gallery-item"><img src="https://via.placeholder.com/400?text=Update+2"></div>
+                <div class="gallery-item"><img src="https://via.placeholder.com/400?text=Update+3"></div>
+                <div class="gallery-item"><img src="https://via.placeholder.com/400?text=Update+4"></div>
+                <div class="gallery-item"><img src="https://via.placeholder.com/400?text=Update+5"></div>
+                <div class="gallery-item"><img src="https://via.placeholder.com/400?text=Update+6"></div>
+                <div class="gallery-item"><img src="https://via.placeholder.com/400?text=Update+7"></div>
+                <div class="gallery-item"><img src="https://via.placeholder.com/400?text=Update+8"></div>
+            </div>
+        </section>
 
-        <div class="plot-grid" id="mainPlotGrid">
-            </div>
-        <div id="load-more-marker" style="height: 100px;"></div>
-    </section>
+        <section class="section" id="archive">
+            <h2 class="archive-title">THE ARK ARCHIVE GRID</h2>
+            <div class="donor-grid-wrapper">
+                <div class="donor-grid" id="donorGrid">
+                    <a href="https://your-donor-site.com" target="_blank" class="donor-item">
+                        <div class="donor-circle"><img src="https://via.placeholder.com/100" alt="Donor"></div>
+                        <span class="donor-name">Kawsar A. (100 Trees)</span>
+                    </a>
+                </div>
+            </div>
+            <div id="grid-loader" style="height: 20px;"></div>
+        </section>
 
-    <div id="portal-drawer">
-        <h2 style="font-family: 'Cinzel'; color: var(--ark-primary); margin-bottom: 30px;" id="reg-title">REGISTRATION</h2>
-        <input type="text" id="regName" class="ark-input" placeholder="FULL LEGAL NAME">
-        <input type="number" id="regCount" class="ark-input" placeholder="NUMBER OF TREES">
-        <input type="text" id="regSocial" class="ark-input" placeholder="SOCIAL LINK (FB/IG)">
-        <button onclick="submitData()" style="width: 100%; padding: 20px; background: var(--ark-primary); color: #fff; border: none; letter-spacing: 3px; font-weight: bold; cursor: pointer;">SUBMIT DATA</button>
+        <footer class="footer">
+            <div class="social-dock">
+                <a href="https://wa.me/8801576940717" target="_blank" class="social-icon"><i class="fab fa-whatsapp"></i></a>
+                <a href="https://facebook.com/arkarchiveofficial" target="_blank" class="social-icon"><i class="fab fa-facebook-f"></i></a>
+                <a href="https://instagram.com/arkarchiveofficial" target="_blank" class="social-icon"><i class="fab fa-instagram"></i></a>
+                <a href="https://youtube.com/@ArkArchiveOfficial" target="_blank" class="social-icon"><i class="fab fa-youtube"></i></a>
+                </div>
+            <div class="copyright">
+                © 2026 **ARK ARCHIVE**. All rights reserved.<br>
+                OWNED BY **KAWSAR**. A Global Eternal Legacy Project.
+            </div>
+        </footer>
+    </div>
 
-        <div style="margin-top: 50px;">
-            <h4 style="font-size: 10px; color: var(--ark-primary); letter-spacing: 2px; margin-bottom: 20px;">TAP TO COPY ADDRESS</h4>
-            <div class="pay-addr" onclick="copyText('01576940717')">bKash: 01576940717</div>
-            <div class="pay-addr" onclick="copyText('01756206213')">bKash: 01756206213</div>
-            <div class="pay-addr" onclick="copyText('912221034')">Binance UID: 912221034</div>
-            <div class="pay-addr" onclick="copyText('TTapBkTqrDnzHbWzek6wSBUTcJKFmR8Ws6')">USDT TRC20: TTapBkTqr...</div>
-        </div>
+    <div id="payment-drawer">
+        <h2 class="drawer-title">CONTRIBUTE</h2>
+        
+        <input type="text" id="custName" placeholder="DONOR NAME (Full Name)" class="pay-input">
+        <input type="number" id="treeQty" placeholder="NUMBER OF TREES" class="pay-input">
+        
+        <button onclick="submitRequest()" style="width:100%; padding:15px; background:var(--pink); color:#fff; border:none; border-radius:5px; font-weight:bold; cursor:pointer; margin-bottom:30px;">SUBMIT REQUEST & GET ADDRESS</button>
 
-        <div class="social-dock">
-            <a href="https://wa.me/8801576940717" target="_blank" class="social-icon"><i class="fab fa-whatsapp"></i></a>
-            <a href="#" class="social-icon"><i class="fab fa-facebook-f"></i></a>
-            <a href="#" class="social-icon"><i class="fab fa-instagram"></i></a>
-        </div>
-        
-        <button onclick="toggleDrawer()" style="background: none; border: none; color: #444; margin-top: 40px; cursor: pointer;">[ CLOSE ]</button>
-    </div>
+        <div id="payment-addresses" style="display:none;">
+            <p style="font-size:9px; color:var(--cyan); letter-spacing:2px; margin-bottom:15px;">TAP TO COPY ADDRESS</p>
+            
+            <div class="pay-card" onclick="copyV('01756206213')">
+                <h4>bKash (Personal): 01756206213</h4>
+                <p>Max Limit: $100 per donation.</p>
+            </div>
+            <div class="pay-card" onclick="copyV('01576940717')">
+                <h4>bKash (Personal): 01576940717</h4>
+                <p>Max Limit: $100 per donation.</p>
+            </div>
+            <div class="pay-card" onclick="copyV('017562062134')">
+                <h4>Rocket (12-digit): 017562062134</h4>
+                <p>Large Donation: Max $400 once.</p>
+            </div>
+            <div class="pay-card" onclick="copyV('912221034')">
+                <h4>Binance UID: 912221034</h4>
+                <p style="color:var(--cyan)">Unlimited - Globally Preferred.</p>
+            </div>
+            <div class="pay-card" onclick="copyV('TTapBkTqrDnzHbWzek6wSBUTcJKFmR8Ws6')">
+                <h4 style="font-size:10px;">USDT TRC20: TTapBkTqrDnzHbWzek6wSBUTcJKFmR8Ws6</h4>
+                <p style="color:var(--cyan)">Unlimited - Fast Global Sync.</p>
+            </div>
 
-    <div id="certificate-template">
-        <h1 style="font-size: 50px; color: #1E5128;">ARK ETERNAL</h1>
-        <p style="letter-spacing: 10px; font-size: 12px;">GLOBAL REFORESTATION PROJECT</p>
-        <div style="margin: 60px 0; border-top: 2px solid #000; border-bottom: 2px solid #000; padding: 40px 0;">
-            <p style="font-size: 18px;">This confirms that</p>
-            <h2 id="cert-user-name" style="font-size: 45px; margin: 15px 0;">NAME</h2>
-            <p>has planted <strong id="cert-tree-val">0</strong> Fruit Trees</p>
-        </div>
-        <p style="font-size: 10px; color: #999;">ARK-2026-LEGACY | WWW.ARKARCHIVE.COM</p>
-    </div>
+            <div class="pay-card">
+                <h4>BANK TRANSFER (USD)</h4>
+                <p>[Your Bank Name]</p>
+                <p>A/C: [Your Account Number]</p>
+                <p>Routing: [Your Routing Number]</p>
+            </div>
+        </div>
+        
+        <button onclick="toggleDrawer()" style="margin-top:30px; background:none; border:none; color:#555; cursor:pointer;">[ CLOSE PANEL ]</button>
+    </div>
 
-    <script>
-        // Multi-Language System
-        const langData = {
-            en: {
-                label: "ENGLISH",
-                submit: "Submit Request",
-                search: "SEARCH YOUR LEGACY",
-                download: "Download",
-                reg: "REGISTRATION",
-                tag: "ONE CHILD • ONE TREE • ONE LEGACY"
-            },
-            bn: {
-                label: "বাংলা",
-                submit: "অনুরোধ পাঠান",
-                search: "আপনার অবদান খুঁজুন",
-                download: "ডাউনলোড",
-                reg: "নিবন্ধন করুন",
-                tag: "একটি শিশু • একটি গাছ • একটি ভবিষ্যৎ"
-            }
-        };
+    <script>
+        // Toggle Drawer
+        function toggleDrawer() { document.getElementById('payment-drawer').classList.toggle('open'); }
+        function copyV(t) { navigator.clipboard.writeText(t); alert("Copied: " + t); }
 
-        let currentLang = 'en';
+        // Submit Request inside Drawer
+        function submitRequest() {
+            const name = document.getElementById('custName').value;
+            const qty = document.getElementById('treeQty').value;
+            if(!name || !qty) return alert("Please enter your name and number of trees.");
+            
+            document.getElementById('payment-addresses').style.display = 'block';
+            confetti({ particleCount: 150, spread: 70, origin: { y: 0.6 } });
+            alert("Request Registered! Please use the payment addresses below.");
+        }
 
-        function switchLanguage() {
-            currentLang = currentLang === 'en' ? 'bn' : 'en';
-            const data = langData[currentLang];
-            document.getElementById('langLabel').innerText = data.label;
-            document.getElementById('btn-submit-text').innerText = data.submit;
-            document.getElementById('search-title').innerText = data.search;
-            document.getElementById('btn-download').innerText = data.download;
-            document.getElementById('reg-title').innerText = data.reg;
-            document.getElementById('tagline-text').innerText = data.tag;
-        }
+        // Infinite Grid Loader (Circle Style, 8 per row)
+        const grid = document.getElementById('donorGrid');
+        let count = 0;
+        function loadMore(n) {
+            for(let i=0; i<n; i++) {
+                count++;
+                grid.innerHTML += `
+                    <div class="donor-item">
+                        <div class="donor-circle"><i class="fas fa-seedling" style="opacity:0.1; color:#fff"></i></div>
+                        <span class="donor-name">Plot #${count}</span>
+                    </div>`;
+            }
+        }
+        loadMore(100);
 
-        // Infinite Plots Generation
-        const grid = document.getElementById('mainPlotGrid');
-        let totalPlotsLoaded = 0;
+        // Infinite scroll observer for grid
+        const observer = new IntersectionObserver((entries) => {
+            if(entries[0].isIntersecting) loadMore(40);
+        });
+        observer.observe(document.getElementById('grid-loader'));
 
-        function createPlots(count) {
-            for (let i = 0; i < count; i++) {
-                totalPlotsLoaded++;
-                const item = document.createElement('div');
-                item.className = 'plot-item';
-                item.innerHTML = `
-                    <div class="plot-circle" onclick="window.open('#', '_blank')">
-                        <img src="https://via.placeholder.com/100?text=ARK">
-                    </div>
-                    <div class="plot-name">SLOT #${totalPlotsLoaded}</div>
-                    <div class="plot-trees">EMPTY PLOT</div>
-                `;
-                grid.appendChild(item);
-            }
-        }
-
-        // Observer for Infinite Scroll
-        const observer = new IntersectionObserver((entries) => {
-            if (entries[0].isIntersecting) {
-                createPlots(20); // লোড শেষ হলে আরও ২০টি যোগ করবে
-            }
-        }, { threshold: 1.0 });
-
-        observer.observe(document.getElementById('load-more-marker'));
-
-        // Initial 100 Plots
-        createPlots(100);
-
-        // Core Functions
-        function copyText(text) {
-            navigator.clipboard.writeText(text);
-            alert("Copied to Clipboard!");
-        }
-
-        function toggleDrawer() {
-            document.getElementById('portal-drawer').classList.toggle('open');
-        }
-
-        function submitData() {
-            confetti({ particleCount: 150, spread: 70, origin: { y: 0.6 } });
-            alert("Data Sent for Verification! Check WhatsApp.");
-            toggleDrawer();
-        }
-
-        function downloadLegacyCard() {
-            const name = document.getElementById('searchInput').value;
-            if(!name) return alert("Enter Name");
-            
-            document.getElementById('cert-user-name').innerText = name.toUpperCase();
-            const certArea = document.getElementById('certificate-template');
-            
-            html2canvas(certArea).then(canvas => {
-                const link = document.createElement('a');
-                link.download = `ARK_CERTIFICATE_${name}.png`;
-                link.href = canvas.toDataURL();
-                link.click();
-            });
-        }
-    </script>
+    </script>
 </body>
 </html>
