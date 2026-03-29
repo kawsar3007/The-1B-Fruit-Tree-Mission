@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>ARK ARCHIVE | Global Eternal Legacy</title>
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700;900&family=Inter:wght@300;400;600&display=swap');
@@ -18,12 +18,24 @@
         body { background: var(--white); color: var(--black); font-family: 'Inter', sans-serif; overflow-x: hidden; }
 
         .nav-bar { width: 100%; max-width: 1200px; height: 100px; display: flex; align-items: center; justify-content: space-between; padding: 0 20px; margin: 0 auto; }
-        .nav-brand { font-family: 'Montserrat'; font-weight: 900; font-size: 24px; letter-spacing: 1px; }
-        .nav-links { display: flex; gap: 20px; align-items: center; }
+        .nav-brand { font-family: 'Montserrat'; font-weight: 900; font-size: 24px; letter-spacing: 1px; flex-shrink: 0; }
+        
+        .nav-stats {
+            display: flex;
+            gap: 20px;
+            align-items: center;
+            justify-content: center;
+            flex-grow: 1;
+            margin: 0 15px;
+        }
+        .stat-item { text-align: center; }
+        .stat-number { display: block; font-family: 'Montserrat'; font-weight: 900; font-size: 16px; color: var(--pink); line-height: 1; }
+        .stat-text { display: block; font-size: 9px; text-transform: uppercase; font-weight: 700; color: #666; margin-top: 2px; }
+
+        .nav-links { display: flex; gap: 20px; align-items: center; flex-shrink: 0; }
         .nav-link { text-decoration: none; color: var(--black); font-weight: 700; font-size: 13px; text-transform: uppercase; font-family: 'Montserrat'; }
         .donate-btn { background: var(--pink); color: #fff; padding: 12px 30px; border-radius: 50px; text-decoration: none; font-weight: 900; font-size: 13px; text-transform: uppercase; cursor: pointer; border: none; }
 
-        /* Fixed Social Sidebar */
         .fixed-social-bar {
             position: fixed; right: 20px; bottom: 30px;
             display: flex; flex-direction: column; gap: 10px; z-index: 9999;
@@ -46,7 +58,7 @@
         #philosophy { background: var(--white); text-align: left; }
         .content-wrap { max-width: 1100px; width: 100%; }
         .info-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(450px, 1fr)); gap: 40px; margin-top: 50px; }
-        @media (max-width: 768px) { .info-grid { grid-template-columns: 1fr; } }
+        @media (max-width: 768px) { .info-grid { grid-template-columns: 1fr; } .nav-stats { display: none; } }
         .info-card h3 { font-family: 'Montserrat'; font-weight: 900; color: var(--cyan); margin-bottom: 15px; text-transform: uppercase; }
         .info-card p { line-height: 1.8; color: #444; font-size: 15px; margin-bottom: 10px; }
 
@@ -87,13 +99,29 @@
         <a href="https://instagram.com/arkarchiveofficial" target="_blank" class="side-icon"><i class="fab fa-instagram"></i></a>
         <a href="https://youtube.com/@ArkArchiveOfficial" target="_blank" class="side-icon"><i class="fab fa-youtube"></i></a>
         
-        <a href="#" target="_blank" class="side-icon"><i class="fab fa-tiktok"></i></a>
-        <a href="#" target="_blank" class="side-icon"><i class="fab fa-x-twitter"></i></a>
+        <a href="https://tiktok.com/@arkarchiveofficial" target="_blank" class="side-icon"><i class="fab fa-tiktok"></i></a>
+        <a href="https://x.com/arkarchiveofficial" target="_blank" class="side-icon"><i class="fab fa-x-twitter"></i></a>
     </div>
 
     <div class="main-wrapper">
         <header class="nav-bar">
             <div class="nav-brand">ARK ARCHIVE</div>
+            
+            <div class="nav-stats">
+                <div class="stat-item">
+                    <span class="stat-number" id="stat-donation">$0</span>
+                    <span class="stat-text">Collected</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-number" id="stat-bought">0</span>
+                    <span class="stat-text">Trees Bought</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-number" id="stat-handed">0</span>
+                    <span class="stat-text">Handed Over</span>
+                </div>
+            </div>
+
             <nav class="nav-links">
                 <a href="#philosophy" class="nav-link">Philosophy</a>
                 <a href="#archive" class="nav-link">Archive</a>
@@ -198,9 +226,17 @@
                 <span class="method-info">Suitable for larger contributions in a single transaction.</span>
             </div>
             
-            <div class="pay-card">
-                <h4>Social Support: TikTok / X (Twitter)</h4>
-                <span class="method-info">Contact support via WhatsApp to donate via social platform tips/gifts.</span>
+            <div class="pay-card" style="border: 2px dashed var(--cyan); cursor: default;">
+                <h4 style="color:var(--cyan); margin-bottom:10px;">Bank Transfer (SWIFT)</h4>
+                <div style="font-size:12px; text-align: left; line-height: 1.6;">
+                    <p><strong>Account Holder:</strong> [ Enter Name ]</p>
+                    <p><strong>Account Number:</strong> [ Enter Number ]</p>
+                    <p><strong>Bank:</strong> [ Enter Bank Name ]</p>
+                    <p><strong>Branch:</strong> [ Enter Branch ]</p>
+                    <p><strong>Routing No:</strong> [ Enter Routing ]</p>
+                    <p><strong>SWIFT Code:</strong> [ Enter SWIFT ]</p>
+                </div>
+                <span class="method-info" style="margin-top:10px; border-top: 1px solid #ddd; padding-top: 5px;">Direct bank wire for official records. (Details coming soon)</span>
             </div>
 
             <div class="pay-card" onclick="copy('912221034')">
@@ -213,28 +249,32 @@
                 <span class="limit-tag" style="background:var(--cyan); color:#000;">No Limit</span>
                 <span class="method-info">Global crypto transfer. Preferred for any amount.</span>
             </div>
-
-            <div class="pay-card" style="border: 2px dashed var(--cyan); cursor: default;">
-                <h4 style="color:var(--cyan);">Bank Transfer (SWIFT)</h4>
-                <div style="font-size:12px; margin:10px 0; text-align: left;">
-                    <p><strong>Account Holder:</strong> [ Enter Name ]</p>
-                    <p><strong>Account Number:</strong> [ Enter Number ]</p>
-                    <p><strong>Bank:</strong> [ Enter Bank Name ]</p>
-                    <p><strong>Branch:</strong> [ Enter Branch ]</p>
-                    <p><strong>Routing No:</strong> [ Enter Routing ]</p>
-                    <p><strong>SWIFT Code:</strong> [ Enter SWIFT ]</p>
-                </div>
-                <span class="method-info">Direct bank wire for official records. (Details coming soon)</span>
-            </div>
         </div>
         <button onclick="toggleDrawer()" style="margin-top:30px; background:none; border:none; color:#aaa; cursor:pointer;">[ CLOSE PANEL ]</button>
     </div>
 
     <script>
+        const adminData = {
+            donationAmount: 0,
+            treesBought: 0,
+            treesDelivered: 0
+        };
+
+        function updateStats() {
+            document.getElementById('stat-donation').innerText = '$' + adminData.donationAmount;
+            document.getElementById('stat-bought').innerText = adminData.treesBought;
+            document.getElementById('stat-handed').innerText = adminData.treesDelivered;
+        }
+
+        window.onload = () => {
+            updateStats();
+            loadPlots(120);
+        };
+
         function toggleDrawer() { document.getElementById('payment-drawer').classList.toggle('open'); }
         function copy(t) { 
             navigator.clipboard.writeText(t).then(() => {
-                alert("Address Copied: " + t);
+                alert("Copied: " + t);
             });
         }
 
@@ -258,7 +298,6 @@
                 grid.innerHTML += `<div class="donor-circle"><i class="fas fa-tree" style="opacity:0.2; font-size:24px;"></i><span class="donor-name">Plot #${plotCount}</span></div>`;
             }
         }
-        loadPlots(120);
 
         window.addEventListener('scroll', () => {
             if ((window.innerHeight + window.scrollY) >= document.body.offsetHeight - 500) {
